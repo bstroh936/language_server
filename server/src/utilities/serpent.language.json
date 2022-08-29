@@ -1,0 +1,40 @@
+{
+	"basic_syntax":"",
+	"comments":"",
+	"id_types":[
+		"universe","cell", "surf", "mat","det","src"
+	],
+	"lists":{
+		"surf":[	
+			{"id":"inf","params":0},
+			{"id":"px","params":1},
+			{"id":"py","params":1},
+			{"id":"pz","params":1},
+			{"id":"sph","params":4},
+			{"id":"cylx","params":5},
+			{"id":"cyly","params":5},
+			{"id":"cylz","params":5},
+			{"id":"cyl","params":5},
+			{"id":"sqc","params":4},
+			{"id":"cube","params":4},
+			{"id":"cuboid","params":6},
+			{"id":"hexxc","params":4},
+			{"id":"hexyc","params":4},
+			{"id":"hexxprism","params":5},
+			{"id":"hexyprism","params":5},
+			{"id":"cross","params":5},
+			{"id":"pad","params":6},
+			{"id":"cone","params":5},
+			{"id":"conx","params":5},
+			{"id":"cony","params":5},
+			{"id":"conz","params":5},
+			{"id":"dode","params":4},
+			{"id":"octa","params":4},
+			{"id":"plane","params":4},
+			{"id":"quadratic","params":10}
+		],
+		"set_options":["bc"],
+		"mat_options":["vol","mass","rgb", "moder","tmp"]
+
+	}
+}

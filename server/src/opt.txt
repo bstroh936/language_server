@@ -1,0 +1,994 @@
+set absrate A [ MAT ]
+		Sets normalization to total absorption rate.([a-z])\n\t\t([a-z])acelib
+		F	 : number of neutrons absorbed per second (neutrons/s)
+		MAT	 : dummy parameter
+
+set acelib LIB1 [ LIB2 LIB3 ... ]
+		Sets the cross section directory file paths. Input values:
+		LIBn	 : file paths to directory files
+
+set adf UNI SURF SYM [ENF] 
+		Sets parameters for the calculation of assembly discontinuity factors (ADFs). Input values:
+		UNI	 : universe where spatial homogenization is performed
+		SURF	 : surface enclosing the universe
+		SYM	 : symmetry option (see separate list)
+		ENF	 : option to skip diffusion flux solver and enforce flat homogeneous flux distribution based on mean heterogeneous flux (1/yes). Default is (0/no).
+
+set alb UNI SURF DIR 
+Sets parameters for calculating albedos. Input values:
+UNI	 : universe where spatial homogenization is performed
+SURF	 : surface for which the albedos are calculated
+DIR	 : current direction (-1 = inward, 1 = outward)
+
+set arr MODEN [ MODEG ]
+Sets analog reaction rate calculation on or off. Input values:
+MODEN	 : mode for neutrons (0 = no reactions included, 1 = include only reactions that affect neutron balance, 2 = include all reactions)
+MODEG	 : mode for photons (0 = no reactions included, 1 = include all reactions)
+
+set ba ZAI1 ZAI2 ...
+Defines isotopes handled separately as burnable absorbers. Input values:
+ZAIn	 : nuclide identifiers (ZAI)
+
+set bala OPT
+Sets OpenMP load balancing on or off. Input values:
+OPT	 : probability to store particles in common queue (0 = off, >0 = on)
+
+set bc MODE
+Sets the boundary conditions for all outer boundaries of the geometry. Input values:
+MODE	 : boundary type (1 = vacuum, 2 = reflective, 3 = periodic)
+set bc MODE ALB
+Sets the boundary conditions with albedo for all outer boundaries of the geometry. Input values:
+MODE	 : boundary type (1 = vacuum, 2 = reflective, 3 = periodic)
+ALB	 : albedo
+set bc MODEX MODEY MODEZ
+Sets the boundary conditions separately for x-, y- and z-directions. Input values:
+MODEX	 : boundary type in x-direction (1 = vacuum, 2 = reflective, 3 = periodic)
+MODEY	 : boundary type in y-direction (1 = vacuum, 2 = reflective, 3 = periodic)
+MODEZ	 : boundary type in z-direction (1 = vacuum, 2 = reflective, 3 = periodic)
+set bc MODEX MODEY MODEZ ALB
+Sets the boundary conditions with albedo separately for x-, y- and z-directions. Input values:
+MODEX	 : boundary type in x-direction (1 = vacuum, 2 = reflective, 3 = periodic)
+MODEY	 : boundary type in y-direction (1 = vacuum, 2 = reflective, 3 = periodic)
+MODEZ	 : boundary type in z-direction (1 = vacuum, 2 = reflective, 3 = periodic)
+ALB	 : albedo
+
+set blockdt MAT1 MAT2 ...
+Defines the list of materials where delta-tracking is never used. Input values:
+MATn	 : material names
+
+set bralib LIB1 [ LIB2 LIB3 ... ]
+Sets isomeric branching data library file paths. Input values:
+LIBn	 : library file paths
+
+set branchless OPT [ WGT_LOW WGT_HIGH ]
+Option that enables the branchless collision method for variance reduction. Input values:
+OPT	 : option to switch calculation on (1/yes) or off (0/no). Default is off.
+WGT_LOW	 : weight lower-boundary (default value: 0.2)
+WGT_HIGH	 : weight upper-boundary (default value: 10.0)
+
+set bumode MODE [ ORDER SSD ]
+Sets the burnup calculation mode. Input values:
+MODE	 : burnup calculation mode
+ORDER	 : CRAM order
+SSD	 : number of substeps for CRAM decay steps (default or 0: use TTA)
+The possible settings for mode are:
+Mode	Description
+1, tta	Transmutation Trajectory Analysis (TTA)
+2, cram	Chebyshev Rational Approximation Method (CRAM)
+The CRAM order parameter can only be given when choosing the CRAM mode. The possible settings for CRAM order are:
+CRAM order
+2
+4
+6
+8
+10
+12
+14
+16
+-16
+-48
+
+set bunorm NORM
+Sets the burnup calculation normalization mode if it is not bound to a single material. Input values:
+NORM	 : burnup calculation normalization mode (1 = all materials, 2 = burnable materials, 3 = non-burnable materials)
+
+set ccmaxiter NITER
+Sets the maximum number of coupled calculation iterations. Input values:
+NITER	 : number of iterations.
+
+set ccmaxpop CPOP
+Sets the maximum total live population to simulate in a coupled calculation. Input values:
+CPOP	 : total active population to simulate.
+
+set cdop OPT
+Sets the Doppler broadening method for the energy spectrum of the scattered photons. Input values:
+OPT	 : option to set Doppler broadening method off (0/no) or on (1/yes). The default option is on.
+
+set cea OPT
+Sets the Compton electron angular distribution model on and off. Input values:
+OPT	 : option to set the Compton electron angular distribution model off (0/no) or on (1/yes). The default option is on.
+
+set cfe LN [ TN LG TG ]
+Defines the minimum mean distance for scoring the collision flux estimator (CFE) for photons and neutrons. Input values:
+LN	 : minimum mean distance for scoring the CFE for neutrons
+TN	 : minimum mean time interval for scoring the CFE for neutrons
+LG	 : minimum mean distance for scoring the CFE for photons
+TG	 : minimum mean time interval for scoring the CFE for photons
+
+set cmm OPT
+Sets calculation of diffusion coefficients using the cumulative migration method (CMM) on or off. Input values:
+OPT	 : option to switch CMM calculation on (1/yes) or off (0/no)
+
+set coefpara FMT [ PARAM1 PARAM2 ... ]
+Defines the parameters included in the separate group constant output file. Input values:
+FMT	 : output format, currently used for including or excluding statistical errors (0 = not included, 1 = included)
+PARAMn	 : list of parameters or detectors included in the file
+
+set combing MODE
+Option that enables the combing approach for precursors population control as an alternative to Russian roulette and splitting in dynamic source simulations. Input values:
+MODE	 : combing population-control mode (0 = none, 1 = weight-based, 2 = emission-based)
+
+set comfile INFILE OUTFILE
+Defines the communication files used in the file-based coupled calculation communications. Input values:
+INFILE	 : Path to inwards communication file (signals to Serpent).
+OUTFILE	 : Path to outwards communication file (signals from Serpent).
+
+set confi OPT
+Sets confidentiality flag on or off. Input values:
+OPT	 : option to set confidentiality flag on (1/yes) or off (0/no)
+
+set coverxlib LIB1 [ LIB2 LIB3 ... ]
+Sets COVERX-format multi-group covariance data file paths. Input values:
+LIBn	 : file paths to multi-group covariance data files in the COVERX format (ASCII or binary)
+
+set covlib LIB1 [ LIB2 LIB3 ... ]
+Sets plain ASCII multi-group covariance data file paths. Input values:
+LIBn	 : file paths to multi-group covariance data files in the plain ASCII format (ASCII or binary)
+
+set cpd DEPTH [ NZ ZMIN ZMAX ] [ LVL1 LVL2 ]
+Sets on the calculation of lattice-wise power distributions to output file [input]_core0.m on. Input values:
+DEPTH	 : The number of levels included. 1 is the first lattice calculated from universe 0 usually corresponding to assembly-wise distribution. 2 includes the first two levels usually corresponding to the assembly- and pin-wise distributions.
+NZ	 : Number of equal sized axial bins into which the lattices are divided.
+ZMIN	 : Minimum z-coordinate for the axial division.
+ZMAX	 : Maximum z-coordinate for the axial division.
+LVL1	: User-defined first level where to define the lattice-wise power distribution
+LVL2	: User-defined second level where to define the lattice-wise power distribution
+
+set cpop NPG NGEN NSKIP [ NSKIP2 ]
+Sets parameters for simulated neutron population for corrector neutron transport solutions in burnup calculation. Typically used with the SIE burnup scheme. Input values
+NPG	 : number of neutrons per generation
+NGEN	 : number of active generations
+NSKIP	 : number of inactive generations
+NSKIP2	 : number of inactive generations on further iterations for the same burnup point
+
+set csw FILE
+Writes source points in criticality source simulation into a file. Input values:
+FILE	 : file name where the source points are written
+
+set dataout TABLE_LIST
+Defines the tables included in the nuclear and material data file [input].out.m. Input values:
+TABLE_LIST	 : list of tables
+
+set dbrc Emin Emax NUC1 [ NUC2 ... ]
+Enables the use of doppler-broadening rejection correction (DBRC). Input values:
+Emin	 : Minimum energy for DBRC
+Emax	 : Maximum energy for DBRC
+NUCn	 : Nuclide identifiers for which to apply DBRC to, with 0 K cross section data, e.g. "92238.00c"
+
+set dd MODE [ X0 Y0 α0 ]
+Invokes domain decomposition. Input values
+MODE	 : decomposition mode (0 = none, 1 = simple, 2 = sector, 3 = sector + center)
+X0	x-coordinate of the domain decomposition origin (origin is the centre of the angular division)
+Y0	y-coordinate of the domain decomposition origin (origin is the centre of the angular division)
+α0	angular position of the domain decomposition origin (origin is the initial position of the angular division)
+
+set declib LIB1 [ LIB2 LIB3 ... ]
+Sets the decay data library file paths. Input values:
+LIBn	 : library file paths
+
+set decomp OPT [ ELEM1 ELEM2 ... ]
+Decomposes elemental entries in material cards into isotopes. Input values:
+OPT	 : option to include (1) or exclude (0) elements from decomposed list
+ELEMn	 : element names
+
+set delnu OPT
+Sets delayed neutron emission on or off. Input values:
+OPT	 : option to switch delayed neutron emission on (1/yes) or off (0/no)
+
+set depmtx MODE
+Print burnup matrixes to [input]_depmtx_[mat]_[bu]_[ss].m file during burnup calculation, where "bu" is the burnup step and "ss" is the substep.
+MODE	 : Set printing on (1/yes) or off (0/no).
+
+set depout MODE [STEP]
+Controls which burnable material compositions are printed into the [input]_dep.m output file in case of divided materials. Input values:
+MODE	 : value indicating, which materials to output to the [input]_dep.m file (1 = only partials, 2 = only parents, 3 = both)
+STEP	 : value indicating the print-out interval of the [input]_dep.m file (0 = final step, 1 = all steps, 2 =none)
+
+set deppara PARAM_LIST
+Defines the variables included in the depletion output file [input]_dep.m. Input values:
+PARAM_LIST	 : list of variables
+
+set depstepbunorm NORM
+Sets the depletion step normalization in burnup calculations based on energy deposition. Input values:
+NORM	depletion step normalization mode based on energy deposition (1 = all materials, 2 = burnable materials)
+
+set dfsol MODE [ DC NP ]
+Options for homogeneous diffusion flux solver. Input values:
+MODE	 : boundary conditions for solver (1 = include net currents at boundary surfaces and corners, 2 = include only surface currents)
+DC	 : type of diffusion coefficient used in the calculation (1 = INF_DIFFCOEF, 2 = TRC_DIFFCOEF)
+NP	 : number of points for trapezoidal integration for homogeneous flux
+
+set dix OPT
+Sets double indexing for cross section energy grid look-up on or off:
+MODE	 : option to set double indexing on (1/yes) or off (0/no)
+
+set dspec EGRIDp EGRIDn
+Sets the energy grid structure for decay spectra.
+EGRIDp	 : energy grid structure for photons
+EGRIDn	 : energy grid structure for neutrons
+
+set dt NTRSH [ GTRSH ]
+Sets probability threshold for delta-tracking. Input values:
+NTRSH	 : probability threshold for neutrons
+GTRSH	 : probability threshold for photons
+
+set dynccfile OPT
+Option to store precursors and neutrons between time steps in coupled dynamic simulations into a file. Input values:
+OPT	 : option to switch on (1/yes) or off (0/no) the store/write dynamic data into a file. Default is on.
+
+set dynsrc PATH [ MODE ]
+Links previously generated steady state source distributions to be used in a transient simulation with delayed neutron emission.
+PATH	 : The path of the previously generated source file (without the .main suffix)
+MODE	 : Precursor tracking mode (0 = mesh based, 1 = point-wise)
+
+set ecut EMINn EMINp
+Sets minimum energy cut-off for neutrons and photons. Input values:
+EMINn	 : cut-off energy for neutrons (MeV)
+EMINp	 : cut-off energy for photons (MeV)
+
+set ecutdens DENS1 EMINp,1 [ DENS2 EMINp,2 ... ]
+Sets density-wise minimum energy cut-off for photons. Input values:
+DENSi	 : mass density (g/cm3)
+EMINp,i	 : cut-off energy for photons (MeV)
+
+set ecutmat MAT1 EMINp,1 [ MAT2 EMINp,2 ... ]
+Sets material-wise minimum energy cut-off for photons. Input values:
+MATi	 : material name
+EMINp,i	 : cut-off energy for photons (MeV)
+
+set eddi OPT
+Switches on the calculation of Eddington factors. Input values:
+OPT	 : option to switch calculation on (1) or off (0)
+
+set edepdel OPT [ LOCAL_EGD ]
+Option to include the energy of delayed components in energy deposition calculations. Input values:
+OPT	 : include (1) or exclude (0) the energy of delayed components in energy deposition estimates
+LOCAL_EGD	 : deposit the energy of the delayed fission gammas to fission sites (1) or with the same distribution as the prompt fission gammas (0) (this option is used only in energy deposition mode 3)
+
+set edepkcorr OPT
+Option to apply correction for energy deposition estimates when simulating non-critical systems with criticality source mode. Input values:
+OPT	 : apply (1) or do not apply (0) correction
+
+set edepmode MODE [ E_CAPT ]
+Sets energy deposition mode for energy deposition calculations. Input values:
+MODE	 : energy deposition mode (0, 1, 2 or 3)
+E_CAPT	 : additional energy release in capture reactions given in MeVs per fission (used only in energy deposition mode 1)
+
+set egrid TOL [ EMIN EMAX ]
+Sets the unionized energy grid reconstruction parameters. Input values:
+TOL	 : fractional reconstruction tolerance
+EMIN	 : minimum energy in the grid (MeV)
+EMAX	 : maximum energy in the grid (MeV)
+
+set ekn E
+Sets the Klein-Nishina equation to approximate a Compton scattering event. Input values:
+E	 : energy cut-off for modelling energy and direction of the scattered photon (MeV)
+
+set elcond MAT1 COND1 [ MAT2 COND2 ... ]
+Sets material-wise conductivity state for electrons in photon transport calculations. Input values:
+MATi	 : material name
+CONDi	 : conductivity state (0 = non-conductor, 1 = conductor, 2 = conduction electron dependent).
+
+set elgas MAT1 GAS1 [ MAT2 GAS2 ... ]
+Sets material-wise phase for electrons in photon transport calculations. Input options:
+MATi	 : material name
+GASi	 : phase state (0 = condensed or non-gas, 1 = gas).
+
+set elmee MAT1 MEE1 [ MAT2 MEE2 ... ]
+Sets material-wise mean excitation energy for electrons in photon transport calculations. Input values:
+MATi	 : material name
+MEEi	 : electrons mean excitation energy (MeV)
+
+set elspn EGRID_E
+Sets the stopping power energy grid size for electrons/positrons in photon transport calculations. Input values:
+EGRID_E	 : energy grid size (default value is 200)
+
+set entr NX NY NZ [ XMIN XMAX YMIN YMAX ZMIN ZMAX ]
+Defines the mesh structure used for calculating fission source entropy. Input values:
+NX	 : number of mesh cells in x-direction
+NY	 : number of mesh cells in y-direction
+NZ	 : number of mesh cells in z-direction
+XMIN	 : minimum mesh boundary in x-direction
+XMAX	 : maximum mesh boundary in x-direction
+YMIN	 : minimum mesh boundary in y-direction
+YMAX	 : maximum mesh boundary in y-direction
+ZMIN	 : minimum mesh boundary in z-direction
+ZMAX	 : maximum mesh boundary in z-direction
+
+set fininitfile FILEPATH
+Links a file containing an initial fuel behavior solution used as a starting point for a coupled calculation with the FINIX fuel behavior module. Input values:
+FILEPATH	 : path to the file
+
+set fissh ZAI1 E1 ZAI2 E2 ...
+Overrides default fission heating values. Input values:
+ZAIn	 : nuclide identifiers (ZAI)
+En	 : energy deposited per fission in MeV
+
+set fissrate F [ MAT ]
+Sets normalization to fission rate.
+F	 : number of fission reactions per second (1/s)
+MAT	 : dummy parameter
+
+set fissye OPT
+Option to include energy-dependent fission yields. Input values:
+OPT	 : include (1/yes) or exclude (0/no) energy-dependent fission yields. Default is 1.
+
+set flux F [ MAT ]
+Sets normalization to total flux.
+F	 : flux
+MAT	 : dummy parameter
+
+set fluxlimtrc OPT
+Option that enables the calculation of flux limited TRC diffusion coefficients. Input values:
+OPT	 : option to switch calculation on (1/yes) or off (0/no). Default is off.
+
+set fmtx 1 MAT1 MAT2 ...
+set fmtx 2 UNI1 UNI2 ...
+set fmtx 3 LVL
+set fmtx 4 XMIN XMAX NX YMIN YMAX NY ZMIN ZMAX NZ
+Set the calculation of fission matrixes. Input values:
+MATn	 : material list (type 1)
+UNIn	 : universe list (type 2)
+LVL	 : level number (type 3)
+XMIN	 : minimum x-coordinate mesh boundary (type 4)
+XMAX	 : maximum x-coordinate mesh boundary (type 4)
+NX	 : number of x-mesh cells (type 4)
+YMIN	 : minimum y-coordinate mesh boundary (type 4)
+YMAX	 : maximum y-coordinate mesh boundary (type 4)
+NY	 : number of y-mesh cells (type 4)
+ZMIN	 : minimum z-coordinate mesh boundary (type 4)
+ZMAX	 : maximum z-coordinate mesh boundary (type 4)
+NZ	 : number of z-mesh cells (type 4)
+
+set forcedt MAT1 MAT2 ...
+Defines the list of materials where delta-tracking is always used. Input values:
+MATn	 : material names
+
+set fpcut FPCUT
+Fission product yield cut-off FPCUT acts on cumulative fission yields, and the given number is the lower limit for the maximum cumulative yield in each mass chain. So "set fpcut 1E-2" means that every mass chain (nuclides with same mass number) with all cumulative yields below 1% are discarded from the calculation.
+The cut-off is set to zero by default. Setting the FPCUT cut-off to a higher value (~1E-4 or so) is an effective way to reduce the number of nuclides in the calculation, but at some point it will start affecting the results.
+
+set fsp OPT NSKIP
+Sets fission source passing between two transport simulations in burnup or coupled calculation. The fission source at the end of one transport calculation is used as the initial source for the next transport calculation.
+OPT	 : option to switch fission source passing on (1/yes) or off (0/no)
+NSKIP	 : number of inactive generations on subsequent steps
+
+set fum ERG [ BTCH MODE LIM ]
+set fum ERG [ BTCH MODE LIM TGT ITER INIT ]
+set fum ERG [ BTCH MODE DC LIM TGT ITER INIT ]
+Activates fundamental mode calculation for collapsing intermediate multi-group constant data into few-group constants with a critical spectrum.
+ERG	 : Intermediate multi-group structure for calculation of the leakage-corrected critical spectrum
+BTCH	 : When set to 2, results are averaged over all criticality cycles
+MODE	 : Critical spectrum calculation type (default 0, i.e. old B1 calculation)
+DC	 : Multi-group diffusion coefficients to be used with FM fundamental mode calculation (default value INF_DIFFCOEF). This value is not read with other modes.
+LIM	 : Convergence criterion of keff in fundamental mode calculation calculated as the absolute value difference of keff between successive iterations (default value 1E-7)
+TGT	 : Target value for fundamental mode keff (default value 1.0, not used with the old B1 calculation mode)
+ITER	 : Maximum number of fundamental mode calculation iterations (default value 25, not used with the old B1 calculation mode)
+INIT	 : First guess for absolute value of critical B2 (default value 1E-6, not used with the old B1 calculation mode)
+The possible values for mode are:
+Mode	Description
+o, O, 0	Old B1 calculation (use the same method as before version 2.1.31)
+b, B, 1	New B1 calculation
+p, P, 2	P1 calculation
+f, F, 3	FM calculation
+The possible values for FM mode multi-group diffusion coefficients are:
+Mode	Description
+1	Use out-scattering diffusion coefficients
+2	Use transport corrected diffusion coefficients
+3	Use cumulative migration method diffusion coefficients
+
+set gbuf FAC [ BNK ]
+Sets the size of photon buffer and event bank. Input values:
+FAC	 : factor (> 1) defining the buffer size
+BNK	 : event bank size
+
+set gct OPT
+Switches on the calculation of group constant statistics test. Input values:
+OPT	 : option to switch calculation on (1/yes) or off (0/no). Default is off.
+
+set gcu UNI1 [ UNI2 UNI3 ... ]
+Sets the universes for group constant generation. Input values:
+UNIn	 : universe where group constants are generated or -1 to switch group constant generation off.
+
+set gcut GMAX
+Sets generation cut-off for neutrons. Input values:
+gmax	 : number of simulated generations before cut-off
+
+set genrate G [ MAT ]
+Sets normalization to fission neutron generation rate.
+G	 : number of fission neutrons emitted per second (in neutrons/s)
+MAT	 : material in which the fission neutrons are generated
+
+set gpop MAX_HIS MAX_POP C
+Sets the on-the-fly neutron growing population size algorithm.
+MAX_HIS	 : maximum number of histories
+MAX_POP	 : maximum population size
+C	 : parameter to control the population growth
+
+set gsw FILE [ OPT ]
+Writes secondary photon source points in coupled neutron-photon transport simulation into a file. Input values:
+FILE	 : file name where the source points are written
+OPT	 : option to include secondary photons in transport calculation (1/yes), (0/no)
+
+set his OPT
+Sets batch history record on or off. Input values:
+OPT	 : option to switch batch history record on (1/yes) or off (0/no)
+
+set ifp GEN
+Sets the number of generations to use for calculating the iterated fission probability. Input values:
+GEN	 : Number of generations. Default value 15.
+
+set imp TYPE G
+Defines energy-dependent importances. Input values:
+TYPE	 : type of dependency (e = energy)
+G	 : exponential for adjusting importances (default value: -0.5)
+set imp TYPE r1 I1 [ r2 I2 ... ] 
+Defines geometry-dependent importances for given region(s). Input values:
+TYPE	 : type of (geometrical) dependency (c = cell, m = material, u = universe)
+rn	 : region identifier (cell, material or universe name)
+In	 : importance
+
+set impl ICAPT [ INXN INUBAR ILEAK ]
+Sets implicit reaction modes on or off.
+ICAPT	 : option to switch implicit capture reactions on (1/yes) or off (0/no)
+INXN	 : option to switch implicit nxn reactions on (1/yes) or off (0/no)
+INUBAR	 : number of fission neutrons to emit in each fission (nonzero = implicit treatment, 0 = analog treatment)
+ILEAK	 : option to switch implicit implicit leakage on (1/yes) or off (0/no)
+
+set inftrk LOOPn [ ERRn LOOPp ERRp ]
+Sets parameters for terminating infinite tracking loops.
+LOOPn	 : number of neutron tracking loops interpreted as a geometry error
+ERRn	 : flag to terminate neutron tracking when an infinite loop occurs (0 = no, 1 = yes)
+LOOPp	 : number of photon tracking loops interpreted as a geometry error
+ERRp	 : flag to terminate photon tracking when an infinite loop occurs (0 = no, 1 = yes)
+
+set inventory MAT1 MAT2 ...
+set inventory top N PARA
+Specifies which nuclides or elements to include in the [input]_dep.m output file. Input values:
+MATn	 : Nuclide or element to include
+N	 : Number of nuclides
+PARAM	 : Parameter name
+	Special entries include:
+	"all" -- All nuclides.
+	"accident" -- Nuclides with significant health impact & high migration probability in accident conditions. Source Chernobyl: Assessment of Radiological and Health Impact
+	"actinides" -- Actinides (Z>88) for which cross section data are found in JEFF-3.1.1
+	"burnupcredit" -- Nuclides commonly considered in burnup credit criticality analyses for PWR fuels [1]
+	"burnupindicators" -- Burnup indicators (commonly measured from spent fuel) [2]
+	"cosi6" -- Inventory list used by the COSI6 code (excluding lumped fission products)
+	"lanthanides" -- Lanthanides (56<Z<72) for which cross section data are found in JEFF-3.1.1
+	"longterm" -- Relevant radionuclides in long-term waste analyses [6]
+	"minoractinides" -- Minor actinides (actinides - thorium - uranium - plutonium) for which cross section data are found in JEFF-3.1.1
+	"fp" -- Fission products
+	"dp" -- Actinide decay products
+	"ng" -- Noble gases
+	The second syntax allows listing the most significant contributors to a given result. The parameters are:
+	"mass" -- contribution to mass fraction
+	"activity" -- contribution to activity
+	"sf" -- contribution to spontaneous fission rate
+	"gsrc" -- contribution to gamma emission rate
+	"dh" -- contribution to decay heat
+	"ingtox" -- contribution to ingestion toxicity
+	"inhtox" -- contribution to inhallation toxicity
+	for example "top 10 dh" gives the top 10 contributors to decay heat.
+	Since most significant contributors may change over time, the output may contain more nuclides than is requested in the input card.
+	The calculation of top contributors does not work with the "-rdep" command line option.
+
+set isobra ZAI1 MT1 FG1
+           ZAI2 MT2 FG2
+           ...
+Defines constant branching ratios to isomeric states. Input values:
+ZAIn	 : nuclide identifiers (ZAI)
+MTn	 : ENDF reaction MT
+FGn	 : fraction of reactions leading to the ground state of the product nuclide
+
+set iter alb [ CYCLES KEFF FX FY FZ ]
+Option that iterates the albedo boundary conditions given a target k-eff for the evaluation. Input values:
+CYCLES	 : number of additional inactive cycles to run for the convergence of the iteration (default value: 50)
+KEFF	 : target keff for the iteration (default value: 1.0)
+FX	 : albedo factor in x-direction to normalize the albedo leakage rate (default value: 1.0)
+FY	 : albedo factor in y-direction to normalize the albedo leakage rate (default value: 1.0)
+FZ	 : albedo factor in z-direction to normalize the albedo leakage rate (default value: 1.0)
+
+set iter nuc CYCLES KEFF NZAI ZAI1 ZAI2 ... ZAINZAI [ NMAT MAT1 MAT2 ... MAXNMAT ]
+CYCLES	 : number of additional inactive cycles to run for the convergence of the iteration
+KEFF	 : target keff for the iteration
+NZAI	 : number of different nuclides (ZAI) included in the iteration
+ZAIi	 : the ZAI (e.g. 50100 for boron 10 ground state) of the nuclide to be included in the iteration
+NMAT	 : number of different materials included in the iteration (optional parameter)
+MATi	 : the name of the material to be included in the iteration
+
+set keff KEFF
+Option to scale fission neutron production in external source simulations.
+KEFF	 : Fission neutron production scaling factor. Default value is 1.
+
+set lossrate L [ MAT ]
+Sets normalization to total loss rate.
+L	 : number of lost neutrons per second (neutrons/s)
+MAT	 : dummy parameter
+
+set lost LIM
+Option to treat undefined geometry regions as void. Input values:
+LIM	 : maximum number of collisions allowed in undefined regions or -1 if no limit is set.
+
+set maxsplit MAX MIN
+Sets limiting values for splitting and Russian roulette. Input values:
+MAX	 : maximum number of splits
+MIN	 : minimum survival probability in Russian roulette
+
+set mbtch N
+Adjusts the batch used with MPI data transfer. Input values:
+N	 : batch size in double floats (8 bytes)
+
+set mcvol NP
+Runs the Monte Carlo volume-checker routine to set material volumes before running the transport simulation. Input values:
+NP	 : number of points sampled in the geometry
+
+set mdep UNI VOL N MAT1 MAT2 ... MATN 
+         ZAI1 MT1
+         ZAI2 MT2
+         ...
+Sets parameters for calculating homogenized microscopic cross sections. Input values:
+UNI	 : universe where universe where homogenized microscopic cross sections are generated
+VOL	 : volume of the universe
+N	 : number of materials included in the calculation
+MAT1 MAT2 ... MATN	 : material names
+ZAIi	 : nuclide identifier (ZAI)
+MTi	 : ENDF reaction MT
+
+set memfrac FRAC
+Defines the fraction of total system memory Serpent can allocate to its use. If the fraction is exceeded, the simulation will abort. This is mainly to avert the use of swap-memory, which can make the system unresponsive. Input values:
+FRAC	 : the fraction of system memory that Serpent is allowed to use (between 0 and 1)
+
+set mfpcut MFPMINp
+Sets minimum mean-free-path cut-off for photons. Input values:
+MFPMINp	 : cut-off mean-free-path for photons (cm)
+
+set mfpcutdens DENS1 MFPMINp,1 [ DENS2 MFPMINp,2 ... ]
+Sets density-wise minimum mean-free-path cut-off for photons. Input values:
+DENSi	 : mass density (g/cm3)
+MFPMINp,i	 : cut-off mean-free-path for photons (cm)
+
+set mfpcutmat MAT1 MFPMINp,1 [ MAT2 MFPMINp,2 ... ]
+Sets material-wise minimum mean-free-path cut-off for photons. Input values:
+MATi	 : material name
+MFPMINp,i	 : cut-off mean-free-path for photons (cm)
+
+set micro ERG [ BTCH ]
+Defines the intermediate multi-group structure used for group constant generation.
+ERG	 : Intermediate multi-group structure used for group constant generation
+BTCH	 : When set to 2, results are averaged over all criticality cycles
+
+set multilevelgcu OPT
+Option that enables the generation of group constants in multiple overlapping universes. Input values:
+OPT	 : option to switch calculation on (1/yes) or off (0/no). Default is off.
+
+set mvol MAT1 ZONE1,1 VOL1,1
+         MAT1 ZONE1,2 VOL1,2
+         ...
+         MAT2 ZONE2,1 VOL2,1
+         ...
+Sets the volumes of material regions. Input values:
+MATm	 : name of material m
+ZONEm,n	 : index of zone n in material m
+VOLm,n	 : volume of zone n in material m
+
+set nbuf FAC [ BNK ]
+Sets the size of neutron buffer and event bank. Input values:
+FAC	 : factor (> 1) defining the buffer size
+BNK	 : event bank size
+
+set nfg ERG
+Defines the few-group structure used for group constant generation.
+ERG	 : Name of the few-group structure used for group constant generation
+set nfg NE
+Defines the few-group structure used for group constant generation. This syntax should not be used anymore.
+NE	 : Number of energy groups (1/2/4) corresponding to Serpent 1 default 1-, 2- or 4-group structure.
+set nfg NE ENE-1 ENE-2 ... E1
+Defines the few-group structure used for group constant generation. This syntax should not be used anymore.
+NE	 : Number of energy groups. Must be at least 2 in this format.
+EN	 : Energy group boundary value between groups N and N+1. Values have to be given in ascending order.
+
+set nfylib LIB1 [ LIB2 LIB3 ... ]
+Sets the neutron-induced fission yield library file paths. Input values:
+LIBn	 : library file paths
+
+set ngamma MODE [ WMIN NMAX ]
+Sets the coupled neutron-photon transport simulation on. Input values:
+MODE	 : simulation mode (0 = off, 1 = analog, 2 = implicit)
+WMIN	 : weight limit for implicit mode (default value: 0.1)
+NMAX	 : maximum number of emitted photons in implicit mode (default value: 10)
+
+set nphys FISS [ CAPT SCATT ]
+Option to set reaction modes for neutrons on and off. Input values:
+FISS	 : option to handle fission (0 = not handled, 1 = handled)
+CAPT	 : option to handle capture (0 = not handled, 1 = handled)
+SCATT	 : option to handle scattering (0 = not handled, 1 = handled)
+
+set nps PP [ BTCH TBI ]
+Sets parameters for simulated particle population in external source mode. Input values:
+PP	 : total number of particles
+BTCH	 : number of batches
+TBI	 : time binning for dynamic mode
+
+set opti MODE
+Sets the optimization mode which affects the performance and memory usage. Input values:
+MODE	 : optimization mode
+The possible settings for mode are:
+MODE	Description
+1	Minimum optimization and small memory usage. Suitable for very large burnup calculation problems involving tens or hundreds of thousands of depletion zones.
+2	Good performance in burnup calculations involving several thousand depletion zones. Suitable for research reactor applications, but not the best choice for group constant generation.
+3	Similar to mode 4, but lower memory demand. CPU time required by burnup and processing routines increases steeply along with the number of depletion zones, which makes the mode better suited for small burnup calculation problems.
+4	Maximum performance at the cost of memory usage. Suitable for group constant generation and 2D assembly burnup calculations with a limited number of depletion zones.
+
+set outp INT
+Sets the interval (in cycles) for writing simulation output to files. Input values:
+INT	 : number of cycles after which the output-files are updated
+
+set pbuf FAC
+Sets the size of the precursors buffer. Input values:
+FAC	 : factor (>1) defining the buffer size
+
+set pcc MODE [ SSP SSC ]
+set pcc 5 PRED CORR [ SSP SSC ]
+Sets the time integration method in burnup calculation. Input values:
+MODE	 : time integration method
+PRED	 : predictor step integration scheme (0 = constant extrapolation, 1 = linear extrapolation)
+CORR	 : corrector step integration scheme (1 = linear interpolation, 2 = quadratic interpolation)
+SSP	 : number of substeps for predictor steps
+SSC	 : number of substeps for corrector steps
+The possible settings for mode are:
+Mode	Predictor method	Corrector method
+0, CE	Constant extrapolation	-
+1, CELI	Constant extrapolation	Linear interpolation
+2, LE	Linear extrapolation	-
+3, LELI	Linear extrapolation	Linear interpolation
+4, LEQI	Linear extrapolation	Quadratic interpolation
+5	Constant or linear extrapolation	Linear or quadratic interpolation
+6, CECE	Constant extrapolation	Constant backwards extrapolation
+
+set pdatadir DIR
+Sets the file path for auxiliary photon data. Input values:
+DIR	 : file path for directory where the data is located
+
+set poi OPT VOL [ XE135M ]
+Switches the calculation of poison cross sections on or off. Input values:
+OPT	 : option to switch the calculation of poison cross sections on (1/yes) or off (0/no)
+VOL	 : volume of the homogenized zone
+XE135M	 : option to treat 135mXe separate from ground state 135Xe (0 = lumped with 135Xe, 1 = separate treatment)
+
+set pop NPG NGEN NSKIP [ K0 BTCH NEIG ]
+Sets parameters for simulated neutron population in criticality source mode. Input values:
+NPG	 : number of neutrons per generation
+NGEN	 : number of active generations
+NSKIP	 : number of inactive generations
+K0	 : initial guess for keff
+BTCH	 : batching interval (default value is 1 generation per batch)
+NEIG	 : number of independent parallel eigenvalue calculations (default is 1)
+
+set powdens PDE [ MAT ]
+Sets normalization to power density
+PDE	 : power density (in kW/g)
+MAT	 : material in which the given power is produced
+
+set power P [ MAT ]
+Sets normalization to total fission power
+P	 : fission power (in W)
+MAT	 : material in which the given power is produced
+
+set ppid PID
+Defines the external code process identifier (PID) number to be used for communication in the POSIX-based coupled calculation communications. Input values:
+PID	 : Process identifier (PID) of the (parent) process that Serpent should communicate with.
+
+set pport PORT
+Defines the external code port number to be used for communication in the SOCKET-based coupled calculation communications. Input values:
+PORT
+
+set ppw UNI LAT
+Turns on the calculation of pin powers and pin power form factors. Input values:
+UNI	 : The universe where the pin power distribution is calculated.
+LAT	 : The lattice where the calculation is performed.
+
+set precsrcf FACTOR
+Set number of pointwise precursors to hold in memory in transient simulations. A multiplicative factor for the number of neutrons per batch, i.e. setting FACTOR to 10 when running 1000 neutrons per batch will keep 10000 pointwise precursors in memory.
+FACTOR	 : The factor to multiply the number of neutrons per batch to obtain the number of pointwise precursors to hold in memory.
+
+set precthresh THRESHOLD
+Set the weight threshold for creating and storing a new delayed neutron precursor in transient simulations.
+THRESHOLD	 : A weight threshold relative to the incoming neutron weight.
+
+set printelsp OPT
+Prints out the stopping power data for electrons/positions generated by the thick-target bremsstrahlung model. Input values:
+OPT	 : Option to output the stopping power data from the bremsstrahlung model off (0/no) or on (1/yes), in file [input]_elsp.m. The default option is off.
+
+set printm MODE [ FRAC ]
+Print material compositions to [input].bumat[bu] file during burnup calculation, where "bu" is the burnup step.
+MODE	 : Set printing on (1/yes) or off (0/no).
+FRAC	 : Optional atomic fraction for printing out decay nuclides (nuclides with no transport cross sections).
+
+set qparam_dbrc QPARAM
+Sets the Q-parameter (confidence interval) for temperature majorants to be used with Doppler-broadening rejection correction (set dbrc option). Input values:
+QPARAM	 : confidence interval
+
+set qparam_tms QPARAM
+Sets the Q-parameter (confidence interval) for temperature majorants to be used with target motion sampling method (mat card). Input values:
+QPARAM	 : confidence interval
+
+set relfactor FAC
+Sets the underrelaxation factor for the power relaxation used in coupled multi-physics calculations. Input values:
+FAC	 : underrelaxation factor
+
+set repro MODE
+Sets the reproducibility mode in parallel calculations. Input values:
+MODE	 : reproducibility mode
+The possible settings for mode are:
+Mode	Description
+0	No reproducibility
+1	Reproducibility with OpenMP parallelization (default value)
+2	Reproducibility with MPI and hybrid OpenMP / MPI parallelization
+
+set rfr STEP FILE [ NFILE ]
+set rfr idx I FILE [ NFILE ]
+Reads material compositions from a binary restart file. Input values:
+STEP	 : burnup step from which the compositions are obtained
+I	 : burnup step index from which the compositions are obtained
+FILE	 : name of the binary restart file
+NFILE	 : number of restart files
+
+set rfw OPT [ FILE ]
+Writes material compositions in burnup calculation into a binary restart file. Input values:
+OPT	 : option to switch writing on (0 = no, >0 = yes; with, 1= all nuclides, 2 = transport nuclides)
+FILE	 : name of the binary restart file. Default value [input].wrk.
+
+set rnddec DEC [ FY DH ]
+Option to set decay and fission yield data randomized mode on or off. Input values:
+DEC	 : option to switch randomized decay constants on (1/yes) or off (0/no)
+FY	 : option to switch randomized fission yields on (1/yes) or off (0/no)
+DH	 : option to switch randomized decay heat on (1/yes) or off (0/no)
+
+set root UNI
+Sets the root universe. Input values:
+UNI	 : universe name
+
+set roulette W0 P
+Sets parameters for weight cut-off and Russian roulette.
+W0	 : minimum particle weight below which cut-off is applied
+P	 : survival probability for Russian roulette (default value: 0.5)
+
+set runtme T
+Sets the maximum running time for the transport simulation. Input values:
+T	 : wall-clock running time (minutes)
+
+set samarium OPT [ MAT1 MAT2 ... ]
+Sets equilibrium samarium calculation on or off:
+OPT	 : option to set equilibrium samarium calculation on (1/yes) or off (0/no)
+MAT1 MAT2 ...	 : optional list of materials for which to set the option (on/off). Default is all fissile materials. Setting equilibrium samarium calculation off for a list of materials sets it on for all other fissile materials.
+
+set savesrc PATH [ PN PP NX NY NZ ]
+Sets up the creation of an initial source to be used in a dynamic simulation with delayed neutron emission.
+PATH	 : The path of the source file to be created
+PN	 : Fraction of tentative neutrons to save (default 1.0). Only affects criticality source simulations.
+PP	 : Fraction of tentative precursors to save (default 1.0). Only affects criticality source simulations.
+NX	 : Precursor mesh size in x-direction (default 1)
+NY	 : Precursor mesh size in y-direction (default 1)
+NZ	 : Precursor mesh size in z-direction (default 1)
+
+set sca NI NB MSH 
+     MIN1 MAX1 SZ1
+     MIN2 MAX2 SZ2
+     MIN3 MAX3 SZ3
+     [ SUB1 SUB2 SUB3 LIM ]
+set sca NI NB MSH 
+    X0 Y0   
+    P NX NY
+    MIN3 MAX3 SZ3
+    [ SUB1 SUB2 SUB3 LIM ]
+Invokes a response matrix solver to obtain an improved source guess for criticality source simulations.
+NI	 : Number of outer iterations
+NB	 : Number of source batches to collect results
+MSH	 : mesh type (1 = Cartesian, 2 = Cylindrical, 4 = x-type hexagonal, 5 = y-type hexagonal)
+MINn	 : minimum mesh boundary (nth coordinate)
+MAXn	 : maximum mesh boundary (nth coordinate)
+SZn	 : number of mesh cells (nth coordinate)
+X0, Y0	 : mesh center of hexagonal mesh (currently must be centered at the origin)
+P	 : hexagonal cell pitch
+NX, NY	 : hexagonal mesh size
+SUBn	 : number of sub-mesh cells (nth coordinate)
+LIM	 : convergence criterion (typical value 1E-12)
+
+set seed RNG [ NBTCH ]
+Sets the seed value for the random number sequence. Input values:
+RNG	 : seed value used for the random number sequence
+NBTCH	 : starting batch (positive value) or history (negative value)
+Notes:
+By default, Serpent gets the RNG seed from system time. This option overrides the value.
+
+set sfbuf SIZE
+Sets the size of the source file buffer including, e.g., criticality source, secondary photon source, detector source or dynamic source modes. Input value:
+SIZE	 : buffer size
+
+set sfrate S [ MAT ]
+Sets normalization to total spontaneous fission rate.
+S	 : number of spontaneous fission reactions per second (1/s)
+MAT	 : dummy parameter
+
+set sfylib LIB1 [ LIB2 LIB3 ... ]
+Sets the spontaneous fission yield library file paths. Input values:
+LIBn	 : library file paths
+
+set shbuf [ OPT_BUF OPT_RES2 ]
+Option to use a shared or private scoring buffer or results array. Input values:
+OPT_BUF	 : use shared (1/yes) or private (0/no) scoring buffer (BUF, default private)
+OPT_RES2	 : use shared (1/yes) or private (0/no) results array (RES2, default shared)
+
+set sie ITER
+Chooses the Stochastic Implicit Euler burnup scheme to be used for the burnup calcualtion. Input values:
+ITER	 : tolerance (negative value) or maximum number of iterations (positive value) for each burnup step
+
+set sourcescale NB SF1 SF2 ...
+Defines a time-interval dependent source scaling factor in dynamic external source calculations (set dynsrc). Input values:
+NB	 : number of time intervals
+SFn	 : time-interval-wise source scaling factor
+
+set spa CMAP [ FRAC ]
+Sets parameters for the source point animation. Input values:
+CMAP	 : color map used for plotting the source point animation
+FRAC	 : fraction for the color scheme (minimum/maximum)
+
+set spd Vn Vp
+Overrides the speed of simulated particles. Input values:
+Vn	 : speed of neutrons (cm/s)
+Vp	 : speed of photons (cm/s)
+
+set srcrate S
+Sets normalization to total source rate.
+S	 : source rate (in particles per second)
+
+set stl EXD NLOOP
+Sets options for a STL geometry model
+EXD	 : facet uncertainty margin or exclusion distance (default: 1E-05)
+NLOOP	: maximum number of trials (default: 1000)
+
+set stlfile OPT
+Sets option to read and write STL search mesh into a binary file, [input].smh
+OPT	 : option to switch reading/writing on (1/yes) or off (0/no)
+
+set tcut Tmax
+Sets time cut-off for neutrons and photons. Input values:
+Tmax	 : time limit for simulated particle histories (in seconds)
+
+set title NAME
+Sets a title for the calculation. Input values:
+NAME	 : title used for the calculation
+
+set tpa Tmin Tmax TAIL NF EVB
+Sets parameters for track plot animation. Input values:
+Tmin	 : starting time of track plot animation (in seconds)
+Tmax	 : end time of track plot animation (in seconds)
+TAIL	 : tail length of plotted particles (in cm)
+NF	 : number of frames
+EVB	 : event bank size
+
+set transmurea ZAI1 MT1 ZAI2 MT2 ...
+Overrides the automatically generated transmutation paths with a user-provided list of reactions. Input values:
+ZAIn	 : nuclide identifier.
+MTn	 : reaction identifier (ENDF reaction MT).
+
+set transnorm FACTOR
+Multiplies the normalization from a transient source linked with set dynsrc by a factor. Input values:
+FACTOR	 : factor to multiply the normalization with.
+
+set transtime FLAG
+Choose how time dependent transformations are actually evaluated. Input values:
+FLAG	 : Possible values 0/1:
+With 0, time dependent transformations are evaluated using the beginning time of the time-interval being simulated (geometry static for each time interval).
+With 1, time dependent transformations are evaluated using the time when the tracking of the neutron being simulated began (geometry static for each neutron lifetime).
+
+set trc MAT FILE Emin [ ZAI1 ZAI2 ... ]
+Defines transport correction for the calculation of transport cross section and diffusion coefficient. Input values:
+MAT	 : material to which the correction is applied
+FILE	 : file path to correction curve data
+Emin	 : minimum energy above which the correction is applied
+ZAIn	 : nuclide identifiers (ZAI)
+
+set ttacut TTACUT
+Sets cut-off for linear chains method (TTA) based on passage. The cut-off is set to 1E-28 by default. Setting TTACUT cut-off to a higher value serves as a termination criterion where any chain accounting for less than the fraction TTACUT of the total atomic density is ignored.
+
+set ttb OPT
+Sets the thick-target bremsstrahlung approximation for modelling electrons and positrons on and off. Input values:
+OPT	 : option to set thick-target bremsstrahlung approximation off (0/no) or on (1/yes). The default option is on.
+
+set ttbpm OPT
+Sets a separate bremsstrahlung model for positrons. Input values:
+OPT	 : option to set a separate bremsstrahlung model off (0/no) or on (1/yes). The default option is on.
+
+set ufs MODE ORDER NX NY NZ
+set ufs MODE ORDER LAT NZ ZMIN ZMAX
+set ufs MODE ORDER NX XMIN XMAX NY XMIN XMAX NZ ZMIN ZMAX
+Turns on the uniform fission source method. Input values:
+MODE	 : reaction rate for the weighted mesh distribution (1 = total (collision), 2 = flux, 3 = fission)
+ORDER	 : exponential factor to adjust the steepness of the distribution
+NX	 : number of x-mesh cells (type 1 and 3)
+XMIN	 : minimum x-coordinate mesh boundary (type 3)
+XMAX	 : maximum x-coordinate mesh boundary (type 3)
+NY	 : number of y-mesh cells (type 1 and 3)
+YMIN	 : minimum y-coordinate mesh boundary (type 3)
+YMAX	 : maximum y-coordinate mesh boundary (type 3)
+NZ	 : number of z-mesh cells (type 1, 2 and 3)
+ZMIN	 : minimum z-coordinate mesh boundary (type 2 and 3)
+ZMAX	 : maximum z-coordinate mesh boundary (type 2 and 3)
+LAT	 : lattice name defining the mesh structure (type 2)
+
+set ures OPT [ NUC1 NUC2 ...  ][ DILUCUT ] 
+Sets unresolved resonance probability table sampling on or off. Input values:
+OPT	 : option to switch probability table sampling on (1/yes) or off (0/no)
+NUCn	 : list of nuclides to which the option is applied to, e.g. "92238.09c". Setting unresolved resonance probability table sampling off for a list of nuclides will set it on for the rest of the nuclides.
+DILUCUT	 : infinite dilution cut-off
+
+set usym UNI AX BC X0 Y0 θ0 θw [ OPT ] 
+Defines a universe symmetry. Input values:
+UNI	 : universe name
+AX	 : symmetry axis (1 = x, 2 = y, 3 = z)
+BC	 : boundary condition (2 = reflective, 3 = periodic)
+X0	 : x-coordinate of the origin
+Y0	 : y-coordinate of the origin
+θ0	 : azimuthal position where the symmetry segment starts (degrees)
+θw	 : width of the segment (degrees)
+OPT	 : option to use actual reflections and translations instead of coordinate transformations
+
+set U235H U235_FISSE
+Sets the U-235 fission heating value. Input values:
+U235_FISSE	 : fission heating value of U-235 (MeV)
+
+set voidc OPT
+Option that enables removing void cells to accelerate particle tracking in complex geometries with numerous void. Input values:
+OPT	 : option to switch the removal mode on (1/yes) or off (0/no). Default is off.
+
+set wrnout OPT
+Option that enables the generation of a warning-message output file.
+OPT	 : option to switch the removal mode on (1/yes) or off (0/no). Default is ON.
+
+set wie FRAC_ITER
+Option that enables the Wielandt’s method to accelerate the convergence of the fission source by setting the initial fraction iteration condition. Input values:
+FRAC_ITER	 : initial guess of the probability of banking the neutron (negative value, ]-1, 0[) or the shifted eigenvalue (positive value, [0.5, 3])
+
+set wwb LO UP [ F ]
+Defines the relation between importances and weight-window boundaries. Input values:
+LO	 : factor relating the lower weight-window boundary to importance
+UP	 : factor relating the upper weight-window boundary to importance
+F	 : Russian roulette survival probability factor
+
+set xenon OPT [ MAT1 MAT2 ... ]
+Sets equilibrium xenon calculation on or off:
+OPT	 : option to set equilibrium xenon calculation on or off (0 = off/no, >0 = on/yes; with 1= include only 135Xe, 2 = include 135Xe and 135mXe)
+MAT1 MAT2 ...	 : optional list of materials for which to set the option (on/off). Default is all fissile materials. Setting equilibrium xenon calculation off for a list of materials sets it on for all other fissile materials.
+
+set xscalc MODE 
+Calculation mode for transmutation cross sections. Input values:
+MODE	 : Calculation mode (1 = direct tallies, 2 = spectrum-collapse)
+
+set xsplot NP Emin Emax 
+Prints cross section data to [input]_xs0.m file. Input values:
+NP	 : Number of energy points to print (minimum value: 10).
+Emin	 : Lower boundary for the energy points.
+Emax	 : Upper boundary for the energy points.
+The cross sections will be printed out at NP logarithmically spaced points between the energy boundaries.

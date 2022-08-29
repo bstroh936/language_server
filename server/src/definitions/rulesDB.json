@@ -1,0 +1,634 @@
+{
+	"grammar_rules":{
+		"basic":"(?:^[A-Za-z0-9\\.\\-\\t ]+$)|(?:^([A-Za-z0-9\\.\\-\\t ]*\\\"[^\\\"]*\\\"[A-Za-z0-9\\.\\-\\t ]*)+$)",
+		"alpha":"[a-zA-Z]+",
+		"num":"[0-9]+",
+		"alphanum":"[A-Za-z0-9]+",
+		"string":"(?:\\\"[^\\\"]*\\\"))",
+		"comments":{
+			"inline":"(?:(\\#|\\%)(.*)$)",
+			"inline_c":"(?:(?:\\/\\*)([^*]*)(?:\\*\\/))",
+			"block":{
+				"start":"(?:\\/\\*)",
+				"end":"(?:\\*\\/)"
+			}
+		},
+		"data":"[0-9]+[\\.]?[0-9]*",
+		"neg":{
+			"num":"[-]?[0-9]+",
+			"data":"[-]?[0-9]+[\\.]?[0-9]*"
+		}
+	},
+
+	"input_parameters":[
+		"name","u0","mat"
+	],
+	"rules":{
+		"branch":{
+			"description":"",
+			"input_str":"",
+			"regex":"",
+			"notes":[],
+			"parameters":[]
+		},
+		"dep":{},
+		"det":{},
+		"disp":{},
+		"ene":{},
+		"include":{},
+		"lat":{},
+		"mat":{},
+		"mesh":{},
+		"nest":{},
+		"particle":{},
+		"pbed":{},
+		"pin":{},
+		"plot":{},
+		"set":{},
+		"src":{},
+		"surf":{},
+		"therm":{},
+		"trans":{}
+	},
+	"set_list":["absrate","acelib","adf","alb","arr","ba","bala","bc","blockdt","bralib",
+		"branchless","bumode","bunorm","ccmaxiter","ccmaxpop","cdop","cea","cfe","cmm","coefpara",
+		"combing","comfile","confi","coverxlib","covlib","cpd","cpop","csw","dataout","dbrc","dd","declib","decomp",
+		"delnu","depmtx","depout","deppara","depstepbunorm","dfsol","dix","dspec","dt","dynccfile","dynsrc",
+		"ecut","ecutdens","ecutmat","eddi","edepdel","edepkcorr","edepmode","egrid","ekn","elcond","elgas","elmee",
+		"elspn","entr","fininitfile","fissh","fissrate","fissye","flux","fluxlimtrc","fmtx","forcedt","fpcut",
+		"fsp","fum","gbuf","gct","gcu","gcut","genrate","gpop","gsw","his","ifp","imp","impl","inftrk","inventory","isobra","iter",
+		"iter","keff","lossrate","lost","maxsplit","mbtch","mcvol","mdep","memfrac","mfpcut","mfpcutdens","mfpcutmat",
+		"micro","minxs","multilevelgcu","mvol","nbuf","nfg","nfylib","ngamma","nphys","nps","opti","outp","pbuf","pcc","pdatadir",
+		"poi","pop","powdens","power","ppid","pport","ppw","precsrcf","precthresh","printelsp","printm","qparam_dbrc","qparam_tms","relfactor",
+		"repro","rfr","rfw","rnddec","root","roulette","runtme","samarium","savesrc","sca","seed","sfbuf","sfrate","sfylib","shbuf",
+		"sie","sourcescale","spa","spd","srcrate","stl","stlfile","tcut","title","tpa","transmurea","transnorm",
+		"transtime","trc","ttacut","ttb","ttbpm","ufs","ures","usym","U235H","voidc","wrnout","wie","wwb",
+		"xenon","xscalc","xsplot"],
+	"input_list":["branch","casematrix","cell","coef","datamesh","dep","det","div","dtrans","ene","ftrans","fun","hisv","ifc","include","lat","ltrans","mat","mesh","mflow","mix","nest","particle","pbed","phb","pin","plot","rep","sample","sens","solid","src","srtrans","strans","surf","therm","tme","trans","transb","transv","umsh","utrans","wwgen","wwin","thermstoch","transa"],
+	"commands":[
+		{
+			"id":"cell",
+			"semantic_token":{"type":"class","modifier":"dec"},
+			"parameters":[
+				{"id":"name", "description":"cell name", "grammar":["alphanum"], "semantic_token":{"type":"const","modifier":"dec"}},
+				{"id":"u0", "description":"universe number of the cell", "grammar":["num"], "semantic_token":{"type":"const","modifier":"ref"}},
+				{"id":"mat", "description":"cell material", "grammar":["alphanum"], "semantic_token":{"type":"const","modifier":"ref"}},
+				{"id":"surf_n", "description":"boundary surfaces of the cell", "grammar":["neg","num"], "semantic_token":{"type":"const","modifier":"ref"}},
+				{"id":"u1", "description":"universe number of the filling universe", "grammar":["num"], "semantic_token":{"type":"const","modifier":"ref"}}
+			],
+			"info":{
+				"name":"Cell definition",
+				"description":"A cell is the basic building block of the geometry",
+				"options":[
+					{"param":"mat","value":"void","def":"The cell is empty"},
+					{"param":"mat","value":"outside","def":"The cell is outside the geometry"},
+					{"param":"mat","value":"fill","def":"The cell is filled by another universe"}
+				],
+				"additional_info":"Cells are a region of space determined by simple boundary surfaces. Each cell is filled with a material, or defined as: {void, outside, fill}"				
+			},
+			
+			"input_syntax":[
+				{
+					"id":	"0",
+					"description":"",
+					"definition":[],
+					"line":"cell <name> <u0> <mat> <surf 1> <surf 2> ... <surf n>",
+					"params":["name","u0","mat","surf_n"]					
+				},{
+					"id":	"1",
+					"description":"Cell material = 'fill'",
+					"definition":[{"param_id":"mat", "param_value":["fill"]}],
+					"line":"cell <name> <u0> fill <u1> <surf 1> <surf 2> ...<surf n>",
+					"params":["name","u0","u1","surf"]					
+				}
+				],
+			"input_data":{
+				"restricted":[],
+				"unrestricted":[]
+			}
+		},{
+			"id":"lat",
+			"semantic_token":{"type":"","modifier":""},
+			"parameters":[
+				{"id":"u0", "description":"universe number of the lattice", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"u", "description":"universe number of the filler universe", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"u_n", "description":"universe numbers filling the sectors", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"type", "description":"lattice type", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"x0", "description":"x coordinate of the lattice origin", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"y0", "description":"y coordinate of the lattice origin", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"z0", "description":"z coordinate of the lattice origin", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"n", "description":"number of sectors in ring", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"nx", "description":"number of lattice elements in the x-direction", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"ny", "description":"number of lattice elements in the y-direction", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"nz", "description":"number of lattice elements in the z-direction", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"nr", "description":"number of rings in the array", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"nl", "description":"number of axial layers", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"p", "description":"lattice pitch", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"px", "description":"lattice pitch in x-direction", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"py", "description":"lattice pitch in y-direction", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"pz", "description":"lattice pitch in z-direction", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"r", "description":"central radius of the ring", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"z", "description":"axial position (lower boundary of the layer)", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"theta", "description":"angle of rotation"}
+			],
+			"info":{
+				"name":"Lattice definition",
+				"description":"A lattice is a special universe, filled with a regular structure of other universes",
+				"options":[
+					{"param":"type","value":"1","def":"Square lattice"},
+					{"param":"type","value":"2","def":"X-type hexagonal lattice (unit cell is the x-type hexagonal cylinder)"},
+					{"param":"type","value":"3","def":"Y-type hexagonal lattice (unit cell is the y-type hexagonal cylinder)"},
+					{"param":"type","value":"4","def":"Circular cluster array"},
+					{"param":"type","value":"6","def":"Cubical lattice"},
+					{"param":"type","value":"7","def":"X-type hexagonal prismatic lattice"},
+					{"param":"type","value":"8","def":"Y-type hexagonal prismatic lattice"},
+					{"param":"type","value":"9","def":"Verticle stack lattice"},
+					{"param":"type","value":"11","def":"Cuboidal 3D lattice"}
+				],
+				"additional_info":"The lattice card is followed by a list of universe numbers, which determines the layout. The lattice type determines the layout of the list"				
+			},
+			
+			"input_syntax":[
+					{
+						"id":	"1",
+						"description":"Square and Hexagonal lattice",
+						"definition":[{"param_id":"type", "param_value":["1","2","3"]}],
+						"line":"lat <u0> <type> <x0> <y0> <nx> <ny> <p>",
+						"params":["u0","type","x0","y0","nx","ny","p"]					
+					},{
+						"id":	"2",
+						"description":"Circular cluster array",
+						"definition":[{"param_id":"type", "param_value":["4"]}],
+						"line":"lat <u0> <type> <x0> <y0> <nr>",
+						"params":["u0","type","x0","y0","nr"]					
+					},{
+						"id":	"3",
+						"description":"Infinite 3D lattice",
+						"definition":[{"param_id":"type", "param_value":["6","7","8"]}],
+						"line":"lat <u0> <type> <x0> <y0> <p> <u>",
+						"params":["u0","type","x0","y0","p","u"]					
+					},{
+						"id":	"4",
+						"description":"Verticle stack",
+						"definition":[{"param_id":"type", "param_value":["9"]}],
+						"line":"lat <u0> <type> <x0> <y0> <nl>",
+						"params":["u0","type","x0","y0","nl"]					
+					},{
+						"id":	"5",
+						"description":"Cuboidal 3D lattice",
+						"definition":[{"param_id":"type", "param_value":["11"]}],
+						"line":"lat <u0> <type> <x0> <y0> <z0> <nx> <ny> <nz> <px> <py> <pz>",
+						"params":["u0","type","x0","y0","z0","nx","ny","nz","px","py","pz"]					
+					}
+				],
+			"input_data":{
+				"restricted":[
+					{	
+						"type":"1",
+						"description":"2D Lattice",
+						"definition":[
+							{"section":"1","requirements":[{"type":"total", "value":"x0*y0"}]}],
+						"line":"<u1> <u2> ... <uN>",
+						"params":["u"]
+					},{	
+						"type":"2",
+						"description":"2D Lattice rings",
+						"definition":[
+							{"section":"1","requirements":[{"type":"lines", "value":"nr"}]}],
+						"line":"<n> <r> <theta> <u1> <u2> ... <un>",
+						"params":["n","r","theta","u_n"]
+					},{	
+						"type":"4",
+						"description":"Stack",
+						"definition":[
+							{"section":"1","requirements":[{"type":"lines", "value":"nl"},{"type":"params","value":2}]}],
+						"line":"<z> <u>",
+						"params":["z","u"]
+					},{	
+						"type":"5",
+						"description":"3D Lattice",
+						"definition":[
+							{"section":"1","requirements":[{"type":"total", "value":"x0*y0*z0"}]}],
+						"line":"<u1> <u2> ... <uN>",
+						"params":["u"]
+					}
+				],
+				"unrestricted":[]
+			}
+		},{
+			"id":"pin",
+			"semantic_token":{"type":"","modifier":""},
+			"parameters":[
+				{"id":"id", "description":"pin identifier (universe number)", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"mat_n", "description":"materials X", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"r_n", "description":"outer radii of the material regions", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"mat_X", "description":"outermost material region", "grammar":[], "semantic_token":{"type":"","modifier":""}}
+			],
+			"info":{
+				"name":"Fuel pin definition",
+				"description":"",
+				"options":[
+					{"param":"0","value":"","def":""},
+					{"param":"0","value":"","def":""},
+					{"param":"0","value":"","def":""}
+				],
+				"additional_info":""				
+			},
+			
+			"input_syntax":[
+				{
+					"id":	"1",
+					"description":"",
+					"definition":[],
+					"line":"pin <id>",
+					"params":["id"]					
+				}
+			],
+			"input_data":{
+				"restricted":[
+					{	
+						"type":"1",
+						"description":"pin material",
+						"definition":[
+							{"section":"final","requirements":[{"type":"line", "value":"1"}]}],
+						"line":"<mat n>",
+						"params":["mat_X"]
+					}
+				],
+				"unrestricted":[
+					{	
+						"type":"1",
+						"description":"pin materials",						
+						"line":"<mat i> <ri>",
+						"params":["mat_n","r_n"]
+					}
+				]
+			}
+		},{
+			"id":"nest",
+			"semantic_token":{"type":"","modifier":""},
+			"parameters":[
+				{"id":"id", "description":"nest identifier (universe number)", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"type", "description":"surface type", "grammar":[], "semantic_token":{"type":"","modifier":""}},	
+				{"id":"mat_n", "description":"materials X", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"r_n", "description":"surface parameters", "grammar":[], "semantic_token":{"type":"","modifier":""}}
+				
+			],
+			"info":{
+				"name":"Nests",
+				"description":"Nested objects consist of materials or sub-universes separated by similar surfaces.",
+				"options":[],
+				"additional_info":""				
+			},
+			
+			"input_syntax":[
+				{
+					"id":	"1",
+					"description":"Nested object",
+					"definition":[],
+					"line":"nest <id> <type>",
+					"params":["id","type"]					
+				}
+			],
+			"input_data":{
+				"restricted":[],
+				"unrestricted":[
+					{	
+						"type":"1",
+						"description":"Nested object type",						
+						"line":"<mat 1> <r1>",
+						"params":["mat_n","r_n"]
+					}
+				]
+			}
+		},{
+			"id":"trans",
+			"semantic_token":{"type":"","modifier":""},
+			"parameters":[
+				{"id":"u", "description":"universe number being transformed", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"x", "description":"x coordinate of the new origin", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"y", "description":"y coordinate of the new origin", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"z", "description":"z coordinate of the new origin", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"rz", "description":"rotation angle around x-axis", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"ry", "description":"rotation angle around y-axis", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"rz", "description":"rotation angle around z-axis", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"ai", "description":"coefficients of a rotation matrix", "grammar":[], "semantic_token":{"type":"","modifier":""}}
+			],
+			"info":{
+				"name":"Univeres transformations",
+				"description":"",
+				"options":[],
+				"additional_info":""				
+			},
+			
+			"input_syntax":[
+				{
+					"id":	"1",
+					"description":"",
+					"definition":[],
+					"line":"trans <u> <x> <y> <z>",
+					"params":["u","x","y","z"]					
+				},{
+					"id":	"2",
+					"description":"",
+					"definition":[],
+					"line":"trans <u> <x> <y> <z> <rx> <ry> <rz>",
+					"params":["u","x","y","z","rx","ry","rz"]					
+				},{
+					"id":	"3",
+					"description":"",
+					"definition":[],
+					"line":"trans <u> <x> <y> <z> <a1> ... <a9>",
+					"params":["u","x","y","z","ai"]					
+				}
+			],
+			"input_data":{
+				"restricted":[],
+				"unrestricted":[]
+			}
+		},{
+			"id":"particle",
+			"semantic_token":{"type":"","modifier":""},
+			"parameters":[
+				{"id":"id", "description":"particle identifier (universe number)", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"mat_n", "description":"materials X", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"r_n", "description":"outer radii of the material regions", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"mat_X", "description":"outermost material region", "grammar":[], "semantic_token":{"type":"","modifier":""}}
+			],
+			"info":{
+				"name":"",
+				"description":"",
+				"options":[
+					{"param":"0","value":"","def":""}
+				],
+				"additional_info":""				
+			},
+			
+			"input_syntax":[
+				{
+					"id":	"1",
+					"description":"",
+					"definition":[],
+					"line":"particle <id>",
+					"params":["id"]					
+				}
+			],
+			"input_data":{
+				"restricted":[
+					{	
+						"type":"1",
+						"description":"particle material",
+						"definition":[
+							{"section":"final","requirements":[{"type":"line", "value":"1"}]}],
+						"line":"<mat n>",
+						"params":["mat_X"]
+					}
+				],
+				"unrestricted":[
+					{	
+						"type":"1",
+						"description":"particle materials",						
+						"line":"<mat i> <ri>",
+						"params":["mat_n","r_n"]
+					}
+				]
+			}
+		},{
+			"id":"disp",
+			"semantic_token":{"type":"","modifier":""},
+			"parameters":[
+				{"id":"u0", "description":"universe number of the dispersed medium", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"uf", "description":"universe filling the space between the particles", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"pf_n", "description":"packing fractions of the particle types", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"r_n", "description":"radii of the particle types", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"u_n", "description":"universe numbers of the particle types", "grammar":[], "semantic_token":{"type":"","modifier":""}}
+			],
+			"info":{
+				"name":"",
+				"description":"",
+				"options":[
+					{"param":"0","value":"","def":""}
+				],
+				"additional_info":""				
+			},
+			
+			"input_syntax":[
+				{
+					"id":	"1",
+					"description":"",
+					"definition":[{"param_id":"", "param_value":[]}],
+					"line":"disp <u0> <uf> <pf1> <r1> <u1> ... <pfn> <rn> <un>",
+					"params":["u0","uf","pf_n","r_n","u_n"]					
+				}
+			],
+			"input_data":{
+				"restricted":[],
+				"unrestricted":[]
+			}
+		},{
+			"id":"pbed",
+			"semantic_token":{"type":"","modifier":""},
+			"parameters":[
+				{"id":"u0", "description":"universe number of the dispersed medium", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"uf", "description":"universe filling the space between the particles / pebbles", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"inputfile", "description":"input file containing the particle / pebble coordinates", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"options", "description":"options", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"x", "description":"x coordinate of the particle / pebble", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"y", "description":"y coordinate of the particle / pebble", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"z", "description":"z coordinate of the particle / pebble", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"r", "description":"radius of the particle / pebble", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"u", "description":"universe number of the particle / pebble", "grammar":[], "semantic_token":{"type":"","modifier":""}}		
+			],
+			"info":{
+				"name":"",
+				"description":"",
+				"options":[
+					{"param":"0","value":"","def":""}
+				],
+				"additional_info":""				
+			},
+			
+			"input_syntax":[
+				{
+					"id":	"1",
+					"description":"",
+					"definition":[{"param_id":"", "param_value":[]}],
+					"line":"pbed <u0> <uf> \"<inputfile>\" [<options>]",
+					"params":["u0","uf","inputfile","options"]					
+				}
+			],
+			"input_data":{
+				"restricted":[
+					{	
+						"type":"1",
+						"description":"Particle/pebble bed distribution",
+						"definition":[
+							{"section":"ext","requirements":[{"type":"file", "value":"inputfile"}]}],
+						"line":"<x> <y> <z> <r> <u>",
+						"params":["x","y","z","r","u"]
+					}
+				],
+				"unrestricted":[]
+			}
+		},{
+			"id":"plot",
+			"semantic_token":{"type":"","modifier":""},
+			"parameters":[
+				{"id":"or", "description":"orientation of the plot plane (1, 2 or 3)", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"nx", "description":"width of the plot in pixels", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"ny", "description":"height of the plot in pixels", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"p", "description":" position on the axis perpendicular to the plot plane", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"min1", "description":"minimum value of the first coordinate", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"max1", "description":"maximum value of the first coordinate", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"min2", "description":"minimum value of the second coordinate", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"max2", "description":"maximum value of the second coordinate", "grammar":[], "semantic_token":{"type":"","modifier":""}}
+			],
+			"info":{
+				"name":"Geometry plotter",
+				"description":"",
+				"options":[
+					{"param":"or","value":"1","def":"yz-plot (perpendicular to the x-axis)"},
+					{"param":"or","value":"2","def":"xz-plot (perpendicular to the y-axis)"},
+					{"param":"or","value":"3","def":"xy-plot (perpendicular to the z-axis)"}
+				],
+				"additional_info":""				
+			},
+			
+			"input_syntax":[
+				{
+					"id":	"1",
+					"description":"",
+					"definition":[{"param_id":"", "param_value":[]}],
+					"line":"plot <or> <nx> <ny> [<p> <min1> <max1> <min2> <max2>]",
+					"params":["or","nx","ny","p","min1","max1","min2","max2"]					
+				}
+			],
+			"input_data":{
+				"restricted":[],
+				"unrestricted":[]
+			}
+		},{
+			"id":"mat",
+			"semantic_token":{"type":"","modifier":""},
+			"parameters":[
+				{"id":"name", "description":"material name", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"dens", "description":"density (mass or atomic)", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"iso_n", "description":"names of the constituent nuclides", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"frac_n", "description":"corresponding fractions (mass or atomic)", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"options", "description":"options (depending on case)", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"V", "description":"total material volume in cm3", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"M", "description":"total material mass in g", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"R", "description":"value for red channel (between 0 and 255)", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"G", "description":"value for green channel (between 0 and 255)", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"B", "description":"value for blue channel (between 0 and 255)", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"thname", "description":"name of the thermal scattering data library", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"T", "description":"Doppler temperature in Kelvin", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"ZA", "description":"Doppler temperature in Kelvin", "grammar":[], "semantic_token":{"type":"","modifier":""}}
+			],
+			"info":{
+				"name":"Material definitions",
+				"description":"",
+				"options":[
+					{"param":"options","value":"vol","def":"Set material volume"},
+					{"param":"options","value":"mass","def":"Set material mass"},
+					{"param":"options","value":"rgb","def":"Set colors for the geometry plotter"},
+					{"param":"options","value":"moder","def":"Set thermal scattering library for moderator"},
+					{"param":"options","value":"tmp","def":"Activate doppler broadening routine"}
+				],
+				"additional_info":""				
+			},
+			
+			"input_syntax":[
+				{
+					"id":	"1",
+					"description":"",
+					"definition":[{"param_id":"", "param_value":[]}],
+					"line":"mat <name> <dens> [<options>]",
+					"params":[]					
+				},{
+					"id":	"2",
+					"description":"",
+					"definition":[{"param_id":"", "param_value":[]}],
+					"line":"mat <name> <dens> vol <V>",
+					"params":[]					
+				},{
+					"id":	"3",
+					"description":"",
+					"definition":[{"param_id":"", "param_value":[]}],
+					"line":"mat <name> <dens> mass <M>",
+					"params":[]					
+				},{
+					"id":	"4",
+					"description":"",
+					"definition":[{"param_id":"", "param_value":[]}],
+					"line":"mat <name> <dens> rgb <R> <G> <B>",
+					"params":[]					
+				},				{
+					"id":	"5",
+					"description":"",
+					"definition":[{"param_id":"", "param_value":[]}],
+					"line":"mat <name> <dens> moder <thname> <ZA>",
+					"params":[]					
+				},				{
+					"id":	"6",
+					"description":"The Doppler broadening routine is initiated by adding a “tmp” entry in the material card",
+					"definition":[{"param_id":"", "param_value":[]}],
+					"line":"mat <name> <dens> tmp <T>",
+					"params":[]					
+				}
+			],
+			"input_data":{
+				"restricted":[],
+				"unrestricted":[{	
+						"type":"1",
+						"description":"",						
+						"line":"<iso 1> <frac 1>",
+						"params":[]
+					}]
+			}
+		},{
+			"id":"therm",
+			"semantic_token":{"type":"","modifier":""},
+			"parameters":[
+				{"id":"thname", "description":"name of the data library", "grammar":[], "semantic_token":{"type":"","modifier":""}},
+				{"id":"lib", "description":"library identifier as defined in the directory file", "grammar":[], "semantic_token":{"type":"","modifier":""}}
+			],
+			"info":{
+				"name":"Thermal scattering",
+				"description":"",
+				"options":[
+					{"param":"0","value":"","def":""}
+				],
+				"additional_info":""				
+			},
+			
+			"input_syntax":[
+				{
+					"id":	"1",
+					"description":"",
+					"definition":[{"param_id":"", "param_value":[]}],
+					"line":"therm <thname> <lib>",
+					"params":[]					
+				}
+			],
+			"input_data":{
+				"restricted":[
+					{	
+						"type":"",
+						"description":"",
+						"definition":[
+							{"section":"","requirements":[{"type":"", "value":""}]}],
+						"line":"",
+						"params":[]
+					}
+				],
+				"unrestricted":[{	
+						"type":"",
+						"description":"",						
+						"line":"",
+						"params":[]
+					}]
+			}
+		}
+	]
+}

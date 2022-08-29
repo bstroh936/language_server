@@ -1,0 +1,649 @@
+-----Options----
+set <param> <value 1> <value 2> ...
+where <param> is the parameter name
+<value 1> <value 2> ... are the parameter values
+
+Neutron Population and Criticality Cycles:
+set pop <npop> <cycles> <skip> [<keff0> <int>]
+where <npop> is the number of source neutrons per cycle
+<cycles> is the number of active cycles run
+<skip> is the number of inactive cycles run
+<keff0> is the initial guess for keff
+<int> is the collection interval
+
+Energy grid reconstruction
+set egrid <tol> [<Emin> <Emax>]
+where <tol> is the fractional reconstruction tolerance
+<Emin> is the minimum energy in the grid (MeV)
+<Emax> is the maximum energy in the grid (MeV)
+
+the buffer
+size may be increased by setting:
+set nbuf <f>
+where <f> is the buffer factor (criticality mode) or total size (external source mode)
+
+set dix <mode>
+where <mode> is 1 if the method is used and 0 if not.
+
+set acelib "<file>"
+where <file> is the file path for the ACE directory file
+
+set ures <use> [<mode>] [dilu] [<iso 1> <iso 2> ...]
+where <use> is the option (1 = use data, 0 = omit data)
+<mode> is the calculation mode
+<dilu> is the infinite dilution cut-off
+<iso n> are the nuclides for which the data is used or omitted
+
+set dbrc <Emin> <Emax> [<iso 1> <iso 2> ...]
+where <Emin> is the minimum energy for DBRC (MeV)
+<Emax> is the maximum energy for DBRC (MeV)
+<iso n> are the zero-Kelvin cross section data of the nuclides involved
+set bc <c>
+where <c> is the boundary condition
+Different boundary conditions can be applied in x-, y- and z- surfaces of square cylinder,
+cube and cuboidal boundary. The syntax is then:
+set bc <cx> <cy> <cz>
+where <cx> is the boundary condition in the x-direction
+<cy> is the boundary condition in the y-direction
+<cz> is the boundary condition in the z-direction
+Symmetries in finite geometries can be taken into account using the universe symmetry option:
+
+set usym <uni> <sym> <x> <y>
+where <uni> is the universe number
+<sym> is symmetry type
+<x> is the x-coordinate of symmetry origin
+<y> is the y-coordinate of symmetry origin
+Present version of Serpent allows only quadrant symmetries (<sym> = 4) in universe 0.
+
+Normalization to fission neutron generation rate is set using:
+set genrate <N>
+where <N> is the number of fission neutrons emitted per second
+
+Normalization to source rate is set using:
+set srcrate <N>
+where <N> is the number of neutrons emitted per second
+Normalization to total fission rate is set using:
+set fissrate <N>
+where <N> is the number of fission reactions per second
+Normalization to total absorption rate is set using:
+set absrate <N>
+where <N> is the number of neutrons absorbed per second
+Normalization to
+total loss rate is set using:
+set lossrate <N>
+where <N> is the number of fission neutrons lost per second
+Loss rate includes absorption rate and leakage. Normalization to total flux is set using:
+set flux <flx>
+where <flx> is the total neutron flux
+Normalization to total heating power is set using:
+set power <P>
+where <P> is the total heating power (W)
+The
+U-235 heating value can also be set manually using:
+set U235H <H>
+where <H> is the heating value for U-235 (MeV)
+Heating values for individual actinides can be overridden using:
+set fissh <ZAI1> <H1> <ZAI2> <H2> ...
+where <ZAIn> is the actinide ZAI
+<Hn> is the heating value
+Power density, instead of power can be used for source normalization by setting:
+set powdens <pde>
+where <pde> is the average power density (kW/g)
+The universes in which the group constants are calculated can be set by:
+set gcu <u1> <u2> ...
+where <un> are the universe numbers
+The symmetry option is set by:
+set sym <sym>
+where <sym> is the symmetry option
+Options 2, 4 and 8 are used with
+square lattice geometries and options 6 and 12 with hexagonal geometries. Default option is
+0 (no symmetry).
+This can be overridden by setting the group boundaries manually:
+set nfg <ne> [<E1> <E2> ...]
+where <ne> is the number of energy groups
+<E1> <E2> ... are the group boundaries (in MeV)
+set remxs <opt>
+where <opt> is the scattering matrix option (0 = include only scattering rate,
+1 = include also production)
+
+Serpent can calculate assembly or pin-wise power distributions in full-core simulations. This
+option is set by:
+set cpd <depth> [<nz> <zmin> <zmax>]
+where <depth> is the number of levels included
+<nz> is the number axial bins
+<zmin> is the lower axial boundary
+<zmax> is the upper axial boundary
+set dt <thresh>
+where <thresh> is the delta-tracking threshold value
+This parameter determines the probability limit below which the delta-tracking method is
+used (0 = never, 1 = always).4
+The use of delta-tracking can be blocked in given materials by setting:
+set blockdt <mat 1> <mat 2> ...
+where <mat 1> <mat 2> ... are the materials where delta-tracking
+will not be used
+Serpent has the option to plot all cross sections in a matlab m-file format. The cross section
+data plotter is activated using:
+set xsplot [<ne> <Emin> <Emax> ]
+where <ne> is the number of energy points in plot
+<Emin> is the lower limit of the energy grid (MeV)
+<Emax> is the upper limit of the energy grid (MeV)
+
+The fission source entropy for convergence studies is calculated by default and the total
+entropy is divided in x-, y- and z-components. The entropy mesh is set by:
+set entr [<nx> <ny> <nz> <x0> <x1> <y0> <y1> <z0> <z1>]
+where <nx> is the number of x bins
+<ny> is the number of y bins
+<nz> is the number of z bins
+<x0> is the minimum x-coordinate in mesh
+<x1> is the maximum x-coordinate in mesh
+<y0> is the minimum y-coordinate in mesh
+<y1> is the maximum y-coordinate in mesh
+<z0> is the minimum z-coordinate in mesh
+<z1> is the maximum z-coordinate in mesh
+
+The soluble absorber is defined using:
+set abs <solu> <conc> <mat 1> <mat 2> ...
+where <solu> is the soluble absorber material name
+<conc> is the absorber concentration
+<mat 1> <mat 2> ... are the materials where the absorber is dissolved
+The code mixes material “<abs>” into materials “<mat 1>”, “<mat 2>” ... in concentration
+defined by “<conc>”. Positive concentrations refer to atomic fractions and negative
+concentrations to mass fractions.
+Iteration is defined by:
+set iter <mode> <keff> [<spec> <ne>]
+where <mode> is the iteration mode
+<keff> is the target keff
+<opt> is the leakage spectrum mode (B1-iteration only)
+<ne> is number of energy bins in the spectrum (B1-iteration only)
+The iteration modes are:
+– Iteration of soluble absorber concentration, <mode> = “abs”
+– alpha-eigenvalue calculation, <mode> = “alpha”
+– Iteration of albedo boundary condition, <mode> = “albedo”
+– B1 iteration, <mode> = “B1”
+set fum <egrid>
+where <egrid> is the micro-group structure used for the calculation
+
+The equilibrium xenon calculation is set by:
+set xenon <mode> [<mat 1> <mat 2> ...]
+where <mode> is the calculation mode (0 = off, 1 = on)
+<mat 1> <mat 2> ... are the materials involved in the calculation
+set seed <val>
+where <val> is the seed value (a large integer)
+The free-gas temperatures in cells can be overridden by defining a list of cell
+temperatures:
+set ctmp <cell 1> <T1> <cell 2> <T2> ...
+where <cell n> are the cell names
+<Tn> are the temperatures
+A title string for the calculation can be set using
+set title "<ttl>"
+where <ttl> is the title string
+User-defined variables can be set up for labeling different runs. The syntax is:
+set var <name> <value>
+where <name> is the variable name
+<value> is the value
+The use of track-length flux estimate can be forced in place of the collision estimator using:
+set tle <n>
+where <n> is the option (1 = use tle, 0 = use cfe)
+If the track-length estimator is used, delta-tracking is switched off.
+To reduce the demand, the
+calculation can be switched off using:
+set sumxs <use>
+where <use> is the option (1 = use pre-calculated cross sections, 0 = calculate
+cross sections on-the-fly)
+Calculation of fission product poison cross section (production of I-135, Xe-135, Pm-149
+and Sm-149 and absorption of Xe-135 and Sm-149) can be switched on and off by setting:
+set poi "<opt>"
+where <opt> is the option (0 = off, 1 = on)
+Calculation is off by default. Switching the mode on requires setting the file path for fission
+yield data (see Sec. 8.4.1). This feature is available from version 1.1.17 on.
+
+The emission of delayed neutrons can be swithed on and off using:
+set delnu <use>
+where <use> is the option (1 = emission on, 0 = emission off)
+pop (3-4) population size and number of cycles
+nbuf (1) source buffer
+egrid (1-3) energy grid reconstruction
+dix (1) double indexing of energy grids
+acelib (1) file path for xs library directory file
+ures (1-N) probability table treatment for ures data
+dbrc (3-N) DBRC correction for scattering kernel
+bc (1) boundary conditions
+usym (2-4) universe symmetry
+genrate (1) source normalisation to generation rate
+srcrate (1) source normalisation to source rate
+fissrate (1) source normalisation to fission rate
+absrate (1) source normalisation to absorption rate
+lossrate (1) source normalisation to loss rate
+flux (1) source normalisation to total flux
+power (1) source normalisation to total heating power
+powdens (1) source normalisation to power density
+U235H (1) heating value for U-235 fission
+fissh (1-N) fission heating values for individual actinides
+gcu (1) universe for homogenization
+sym (1) symmetry option
+nfg (1-N) few-group structure for homogenization
+remxs (1) scattering matrix used with removal cross section
+cpd (1) full-core power distributions
+dt (1) delta-tracking threshold
+blockdt (1) delta-tracking block
+xsplot (1-4) cross section data plot file
+entr (1-9) parameters for source entropy calculation
+abs (3-N) soluble absorber
+iter (2) keff iterations
+fum (2) fundamental mode calculation
+xenon (1-N) equilibrium Xe-135 calculation
+title (1) case title
+seed (1) random number seed value
+ctmp (1) override cell temperatures
+var (1) user-defined variable
+tle (1) track-length estimate of neutron flux
+sumxs (1) use pre-calculated summation cross sections
+delnu (1) switch delayed neutron emission on and off
+poi (1) fission product poison cross sections
+
+-----Detectors----
+The syntax is relatively simple:
+det <name> <param 1> <param 2> ...
+where <name> is the detector name
+<param 1> <param 2> ... are the detector parameter sets
+
+dr Reaction multiplier Determines the response function
+dv Detector volume Used for normalization
+dc Detector cell Defines the cell where the reactions are scored
+du Detector universe Defines the universe where the reactions are scored
+dm Detector material Defines the material where the reactions are scored
+dl Detector lattice Defines the lattice where the reactions are scored
+de Detector energy grid Defines the energy bins for the response function
+dx Detector mesh Defines the x-mesh where the reactions are scored
+dy Detector mesh Defines the y-mesh where the reactions are scored
+dz Detector mesh Defines the z-mesh where the reactions are scored
+dt Detector type Special detector types
+ds Surface current detector Defines surface for current detector
+The detector response function is defined by the “dr” entry:
+det <name> dr <mt> <mat>
+where <name> is the detector name
+<mt> is the response function number
+<mat> is the material name (or “void” for void material)
+Material total reactions 0 None
+-1 Total
+-2 Total capture
+-3 Total elastic
+-5 Total (n,2n)
+-6 Total fission
+-7 Total fission neutron production
+-8 Total fission energy deposition
+-9 Majorant
+ENDF Reaction modes 1 Total
+2 Elastic scattering
+16 (n,2n)
+17 (n,3n)
+18 Total fission
+19 First-chance fission
+20 Second-chance fission
+51 Inelastic scattering to 1st excited state
+52 Inelastic scattering to 2nd excited state
+
+det <name> de <ene>
+where <name> is the detector name
+<ene> is the grid name
+The same energy grid definition is also used with B1 fundamental mode calculation (See
+Sec. 5.16).
+The number of energy bins is defined by the grid size. There are four types of energy grids
+1. arbitrarily defined
+2. equal energy-width bins
+3. equal lethargy-width bins
+4. predefined energy group structure
+The grid definition has three entry formats:
+ene <name> 1 <E1> <E2> ... <En>
+ene <name> <type> <N> <Emin> <Emax>
+ene <name> 4 <struct>
+where <name> is the grid name
+<type> is the grid type
+<E1> <E2> ... <En> are the bin boundaries in type 1 grid
+<N> is the number of bins in type 2 and 3 grids
+<Emin> is the minimum energy in type 2 and 3 grids
+<Emax> is the maximum energy in type 2 and 3 grids
+<struct> is the name of a predefined structure
+The detector energy grid is often used for calculating spectral quantities. There are three
+special detector types for spectral calculations, determined by the “dt” detector type entry:
+1. Cumulative spectrum (“dt -1”)
+2. Division by energy width (“dt -2”)
+3. Division by lethargy width (“dt -3”)
+Grid name Description
+nj2 csewg 239 group structure
+nj3 lanl 30 group structure
+nj4 anl 27 group structure
+nj5 rrd 50 group structure
+nj8 laser-thermos 35 group structure
+nj9 epri-cpm 69 group structure
+nj11 lanl 70 group structure
+nj14 eurlib 100-group structure
+nj16 vitamin-e 174-group structure
+nj17 vitamin-j 175-group structure
+nj18 xmas 172-group structure
+nj19 ecco 33-group structure
+nj20 ecco 1968-group structure
+nj21 tripoli 315-group structure
+nj22 xmas lwpc 172-group structure
+nj23 vit-j lwpc 175-group structure
+wms69 WIMS 69-group structure (equivalent with nj9)
+wms172 WIMS 172-group structure
+cas70 CASMO 70-group structure
+cas40 CASMO 40-group structure
+cas25 CASMO 25-group structure
+cas23 CASMO 23-group structure
+cas18 CASMO 18-group structure
+cas16 CASMO 16-group structure
+cas14 CASMO 14-group structure
+cas12 CASMO 12-group structure
+cas9 CASMO 9-group structure
+cas8 CASMO 8-group structure
+cas7 CASMO 7-group structure
+cas4 CASMO 4-group structure
+cas3 CASMO 3-group structure
+cas2 CASMO 2-group structure
+mupo43 MUPO 43-group structure
+scale44 SCALE 44-group structure
+scale238 SCALE 238-group structure
+There are five options for setting the spatial domain of the integration
+1. By defining the cell where the reaction rates are scored using the “dc” parameter.
+2. By defining the universe where the reaction rates are scored using the “du” parameter.
+3. By defining the material where the reaction rates are scored using the “dm” parameter.
+4. By defining the lattice where the reaction rates are scored using the “dl” parameter.
+5. By setting up a one-, two- or three-dimensional mesh using the “dx”, “dy” and “dz”
+parameters.
+
+Detector cells, materials and universes
+Detector cell, material and universe parameters all work on the same principle: the collision
+is scored if it occurs inside the cell, material or universe, respectively. A separate bin is
+created for each entry and the combination of different types creates a combination of bins.
+The syntax is:
+det <name> dc <cell> dm <mat> du <univ>
+where <name> is the detector name
+<cell> is the detector cell
+<mat> is the detector material
+<univ> is the detector universe
+The cells in fuel pins are named using convention:
+nst<np>c<nr>
+where <np> is the pin (universe) number
+<nr> is the ring index starting from the innermost region (= 1)
+Burnable materials in fuel pins are renamed and divided into a user-defined number of annular
+depletion zones (see Sec. 8.2 on page 109). The naming convention is:
+<mat>p<np>r<nr>
+where <mat> is the original material name
+<np> is the pin (universe) number
+<nr> is the ring index starting from the innermost region (= 1)
+The input format for the lattice detector is:
+det <name> dl <lat>
+where <name> is the detector name
+<lat> is the detector lattice number
+The mesh detector creates a super-imposed uniform square mesh over the geometry. The
+mesh structure is given separately in x-, y- and z-directions and the input format for the
+x-type is:
+det <name> dx <xmin> <xmax> <nx>
+where <name> is the detector name
+<xmin> is the minimum x-coordinate of the mesh
+<xmax> is the maximum x-coordinate of the mesh
+<nx> is the number of mesh bins in the x-direction
+The syntax for the current detector is:
+det <name> ds <surf> <dir>
+where <name> is the detector name
+<surf> is the surface name
+<dir> is the direction vector (-1 = inward, 0 = net, 1 = outward)
+
+
+-----Depleted Materials----
+Depleted materials are identified by an additional “burn” entry in the material card:
+mat <name> <dens> burn <nr>
+<iso 1> <frac 1>
+<iso 2> <frac 2>
+...
+where <name> is the material name
+<dens> is the density (mass or atomic)
+<nr> is the number of annular regions in depleted
+fuel pins
+<iso 1> <iso 2> ... are the names of the constituent nuclides
+<frac 1> <frac 2> ... are the corresponding fractions (mass or atomic)
+The code automatically renames the depleted pin materials using convention:
+<mat>p<np>r<nr>
+where <mat> is the original material name
+<np> is the pin (universe) number
+<nr> is the ring index starting from the innermost region (= 1)
+Depleted materials in ordinary cells are not renamed or divided into sub-regions.
+
+-----Irradiation History----
+The irradiation history in the independent burnup calculation mode consists of one or several
+burnup intervals, defined by the “dep” card:
+dep <stype>
+<step 1>
+<step 2>
+...
+where <stype> is the step type
+<step 1> <step 2> ... are the burnup steps
+<stype> Step values
+bustep depletion step, burnup intervals given in MWd/kgU
+butot depletion step, cumulative burnup given in MWd/kgU
+daystep depletion step, time intervals given in days
+daytot depletion step, cumulative time given days
+decstep decay step, time intervals given in days
+dectot decay step, cumulative time given in days
+-----Options for Burnup----
+Option Description Section Page
+declib (1) file path for radioactive decay data 8.4.1 112
+nfylib (1) file path for fission yield data 8.4.1 112
+sfylib (1) file path for spontaneous fission yield data 8.4.1 112
+bunorm (1) normalization mode in burnup calculation 8.4.2 112
+fmass (1) total fissile mass 8.4.2 112
+bumode (1) solution method for Bateman equations 8.4.3 113
+pcc (1) flag for predictor-corrector calculation 8.4.3 113
+xscalc (1) transmutation cross sections generation 8.4.4 113
+fpcut (1) fission product yield cut-off 8.4.5 114
+axs (2) actinide mass chains included in calculation 8.4.5 114
+stabcut (1) stability cut-off 8.4.5 114
+ttacut (1) TTA chain cut-off 8.4.5 114
+xsfcut (1) XS fraction cut-off 8.4.5 114
+xsecut (1) XS threshold energy cut-off 8.4.5 114
+inventory (1-N) nuclide list for burnup calculation output 8.4.6 115
+printm (1) flag for printing material compositions 8.4.7 115
+dhprec (1) precursor-group wise decay heat production 8.4.8 115
+
+set declib "<file>"
+where <file> is the file path for the ENDF format decay data library
+the neutron-induced fission yield library using:
+set nfylib "<file>"
+where <file> is the file path for the ENDF format fission yield library
+and the spontaneous fission yield library:
+set sfylib "<file>"
+where <file> is the file path for the ENDF format fission yield library
+set bunorm <mode>
+where <mode> is the normalization mode
+Mode 1 is the default treatment which normalizes the given reaction rate or power to all
+materials. Mode 2 includes only burnable materials and mode 3 only non-burnable materials.
+The option is available from update 1.1.5 on and earlier code versions use all materials in the
+normalization.
+The code automatically calculates the total fissile mass in the system, which is needed for
+normalizing the reaction rates. If the calculation fails, the value can be set manually using:
+set fmass <m>
+where <m> is the total fissile mass in the system (in grams)
+The calculation mode is set using:
+set bumode <mode>
+where <mode> is the method used for depletion calculation
+The first method (<mode> = 1) is Transmutation Trajectory Analysis (TTA), based on the
+analytical solution of linearized transmutation chains. The second method (<mode> = 2),
+used by default, is an advanced matrix exponential solution based on the Chebyshev Rational
+Approximation Method (CRAM). The third option (<mode> = 3) is the variation TTA
+method, in which cyclic transmutation chains are handled by inducing small variations in the
+coefficients instead of solving the extended TTA equations.
+Predictor-corrector calculation is activated using:
+set pcc <corr>
+where <corr> is the flag for running the corrector step (0 = no, 1 = yes)
+There are two options for calculating the isotopic one-group transmutation cross sections:
+set xscalc <mode>
+where <mode> is the method used for cross section calculation
+In the default method (<mode> = 2), the code calculates these parameters using a highresolution
+flux spectrum recorded during the transport calculation. This procedure results in
+a reduction of calculation time by a factor of 3-4 compared to the direct calculation of the
+cross sections during the transport cycle (<mode> = 1). The drawback is that the method is
+an approximation and that the information on statistical accuracy is lost.2
+The selection is based on the cumulative yield of each fp mass chain:
+set fpcut <lim>
+where <lim> is the limit for fission product yield cut-off
+By default, the range of actinide mass chains included in the calculation extends from Amin -
+1 to Amax + 7, where Amin and Amax are the minimum and maximum actinide mass numbers
+in the initial composition. This range can be set manually by:
+set axs <Amin> <Amax>
+where <Amin> is the lightest actinide mass chain included in the calculation
+<Amax> is the heaviest actinide mass chain included in the calculation
+Stability cut-off:
+set stabcut <lim>
+where <lim> is the limit for stability cut-off
+TTA chain cut-off:
+set ttacut <lim>
+where <lim> is the limit for TTA chain cut-off
+Cross section fraction cut-off:
+set xsfcut <lim>
+where <lim> is the limit for cross section fraction chain cut-off
+Threshold energy cut-off:
+set xsecut <lim>
+where <lim> is the energy boundary
+set by the inventory option:
+set inventory <id1> <id2> ...
+where <idn> are the identifiers.
+The list consists of numerical values that identify the nuclides (1000*Z + 10*A + I) or elements
+(Z). Isotope and and elemental names and symbols (“Pu-239”, “Gd155”, “PM148M”,
+“Cs”, “plutonium”, etc.) are also accepted. Elemental values are calculated by summing
+over the isotopes. Table 8.3 lists additional options that can be used in the inventory list to
+sum over several elements.
+201 act Actinides (Z > 89)
+202 fp Fission products
+204 dp Decay products below thorium in the natural actinide decay series
+208 ng Noble gases (in the fission product range, helium and radon excluded)
+
+set printm <mode>
+where <mode> is the flag for printing material compositions (0 = no, 1 = yes)
+The code produces for each step a file named “<input>.bumat<n>”, where <input>
+is the name of the input file and <n> is the burnup step. The material compositions can be
+used in another Serpent calculation or converted to MCNP format for validation purposes.
+
+Decay heat production can be divided into multiple precursor groups based on the nuclide
+decay constant. The syntax for the option is:
+set dhprec [ <l0> <l1> ... ]
+where <ln> are the group boundaries in ascending order
+
+
+-----External Source Mode----
+The calculation mode is activated by replacing the “pop” input
+parameter (see Sec. 5.2 on page 53) with:
+set nps <Nsrc> [ <Nbatch> ]
+where <Nsrc> is the total number of source neutrons run
+<Nbatch> is the number of batches run
+By default, the simulation is run by dividing the source size into 200 batches. Apart from the
+source definition, described in the following section, the external source simulation works
+very similar to the criticality source method. All features, including detectors and burnup
+calculation are available.
+The syntax for the source definition is:
+src <name> <param 1> <param 2> ...
+where <name> is the source name
+<param 1> <param 2> ... are the source parameter sets
+sw Source weight Determines the relative importance of the source
+sc Source cell Defines the cell where the neutrons are started
+sm Source material Defines the material where the neutrons are started
+sp Source point Defines the coordinates of a point source
+sx, sy, sz Source boundaries Defines the boundaries of the source distribution
+sd Source direction Defines the source direction vector
+se Source energy Multiple uses
+sb Source energy bins Defines a bin-wise energy spectrum
+sr Source reaction Defines the source reaction
+ss Source surface Defines a surface source
+
+If spatial distribution is not defined, neutrons are started uniformly all over the geometry.
+The sampling volume can limited by setting the boundaries in x-, y- and z-directions using:
+src <name> sx <x0> <x1> sy <y0> <y1> sz <z0> <z1>
+where <name> is the source name
+<x0> is the minimum boundary in x-direction
+<x1> is the maximum boundary in x-direction
+<y0> is the minimum boundary in y-direction
+<y1> is the maximum boundary in y-direction
+<z0> is the minimum boundary in z-direction
+<z1> is the maximum boundary in z-direction
+The source can be defined by a single cell using:
+src <name> sc <cell>
+where <name> is the source name
+<cell> is the cell where the neutrons are started
+or to a single material using:
+src <name> sm <mat>
+where <name> is the source name
+<mat> is the material where the neutrons are started
+The cell and material definitions can be used in combination with the boundaries set by “sx”,
+“sy” and “sz”.
+An alternative to a volume source is the point source, defined as:
+src <name> sp <x> <y> <z>
+where <name> is the source name
+<x> is x-coordinate of the point source
+<y> is y-coordinate of the point source
+<z> is z-coordinate of the point source
+
+Surface sources can be defined as:
+src <name> ss <surf>
+where <name> is the source name
+<surf> is the source surface
+The surface is defined using the “surf” card (see Sec. 3.2 on page 19). Positive and negative
+entries refer to neutrons being emitted in the direction of positive and negative surface normal,
+respectively. The feature is available from version 1.1.15 on, and the allowed surface
+types include sphere (“sph”) and cylinder (“cyl”).
+
+Setting the Directional Distribution
+By default, all source neutrons in point and volume sources are emitted isotropically. To
+define a mono-directional source, the direction vector can be set by the “sd” parameter:
+src <name> sd <u> <v> <w>
+where <name> is the source name
+<u> is direction cosine in the x-direction
+<v> is direction cosine in the y-direction
+<w> is direction cosine in the z-direction
+
+Setting the Energy Distribution
+A mono-energetic source is defined by setting the “se” parameter:
+src <name> se <E>
+where <name> is the source name
+<E> is neutron energy
+By default, the emission energy is set to 1 MeV.
+Another option is to take the energy distribution from a nuclear reaction using the “sr” option:
+src <name> sr <iso> <mt>
+where <iso> is the nuclide identifier
+<mt> is the reaction mt
+
+The third option is to define discrete energy bins as:
+src <name> sb <nb> <E0> <w0> <E1> <w1> ... <En> <wn>
+where <nb> is the number of source energy bins
+<Ei> are the energy bin boundaries
+<wi> are the bin weights
+
+Source distribution can be read from a file using:
+src <name> sf <file> <type>
+where <name> is the source name
+<file> is the source file
+<type> is the file type (must be 1)
+The source file contains coordinates, direction cosines, energy, weight and time for every
+source neutron, one entry per line.
+
+-----Mesh Plotter----
+Mesh input
+Serpent has a built-in capability to visualize the neutronics in thermal systems by plotting
+the fission power and thermal flux distributions in a single png graphics file. The parameters
+for a reaction rate mesh plotter are defined as:
+mesh <or> <nx> <ny> [ <sym> <x0> <x1> <y0> <y1> <z0> <z1> ]
+where <or> is the orientation of the plot plane (1, 2 or 3)
+<nx> is the width of the plot in pixels
+<ny> is the height of the plot in pixels
+<sym> is the symmetry option (0, 2, 4 or 8)
+<x0> is the minimum value of the x-coordinate
+<x1> is the maximum value of the x-coordinate
+<y0> is the minimum value of the y-coordinate
+<y1> is the maximum value of the y-coordinate
+<z0> is the minimum value of the z-coordinate
+<z1> is the maximum value of the z-coordinate
+The code calculates reaction rates in an <nx>by <ny> mesh, and projects tha data according
+to the orientation of the plot plane, defined as:
+1. yz-plot (perpendicular to the x-axis)
+2. xz-plot (perpendicular to the y-axis)
+3. xy-plot (perpendicular to the z-axis)

@@ -1,0 +1,138 @@
+{
+	"name": "serpent-language",
+	"displayName": "Serpent language support",
+	"description": "Language Server to aid with Serpent input file developement",
+	"author": "f",
+	"license": "MIT",
+	"version": "0.0.11",
+	"repository": {
+		"type": "git",
+		"url": ""
+	},
+	"publisher": "kk",
+	"icon": "client/images/physics-nuclear-pngrepo-com.png",
+	"categories": [
+		"Programming Languages"
+	],
+	"keywords": [
+		"Serpent",
+		"MCNP-Serpent",
+		"Monte Carlo",
+		"Monte Carlo N-Partle"
+	],
+	"engines": {
+		"vscode": "^1.63.0"
+	},
+	"activationEvents": [
+		"onLanguage:serpent"
+	],
+	"main": "./client/out/extension",
+	"configurationDefaults": {
+    "serpent": {
+      "editor.semanticHighlighting.enabled": true
+    }
+  },
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "Serpent Language Configuration",
+			"properties": {
+				"serpentlanguageServer.maxNumberOfProblems": {
+					"scope": "resource",
+					"type": "number",
+					"default": 100,
+					"description": "Controls the maximum number of problems produced by the server."
+				},
+				"serpentlanguageServer.trace.server": {
+					"scope": "window",
+					"type": "string",
+					"enum": [
+						"off",
+						"messages",
+						"verbose"
+					],
+					"default": "verbose",
+					"description": "Traces the communication between VS Code and the language server."
+				}
+			}
+		},
+		"semanticTokenTypes": [
+			{
+				"id": "geometry",
+				"superType": "class",
+				"description": "A geometry type."
+			},
+			{
+				"id": "material",
+				"superType":"constant",
+				"description": "A material type."
+			},{
+				"id": "detector",
+				"superType":"variable",
+				"description": "A detector type."
+			}
+		],
+		"semanticTokenModifiers": [
+			{
+				"id": "reference_type_1",
+				"description": "Annotates a symbol that is implemented natively"
+			}
+		],
+		"semanticTokenScopes": [
+			{
+				"language": "serpent",
+				"scopes": {
+					"geometry": [
+						"entity.block.cell.serpent"
+					]
+				}
+			}
+		],
+		"languages": [
+			{
+				"id": "serpent",
+				"aliases": [
+					"Serpent",
+					"spnt"
+				],
+				"extensions": [
+					".spnt",
+					".serpent"
+				]
+			}
+		],
+		"grammars": [
+			{
+				"language": "serpent",
+				"scopeName": "source.serpent",
+				"path": "./client/themes/serpent.tmLanguage.json"
+			}
+		],
+		"themes": [
+			{
+				"label": "serpent-theme",
+				"id": "serpent",
+				"uiTheme": "vs-dark",
+				"path": "./client/themes/serpent.theme.json"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -b",
+		"watch": "tsc -b -w",
+		"lint": "eslint ./client/src ./server/src --ext .ts,.tsx,.js,.jsx",
+		"postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
+		"test": "sh ./scripts/e2e.sh"
+	},
+	"devDependencies": {
+		"@types/mocha": "^9.1.0",
+		"@types/node": "^14.18.18",
+		"@types/vscode": "^1.67.0",
+		"@typescript-eslint/eslint-plugin": "^5.19.0",
+		"@typescript-eslint/parser": "^5.19.0",
+		"eslint": "^8.13.0",
+		"mocha": "^9.2.1",
+		"typescript": "^4.6.3"
+	}
+}

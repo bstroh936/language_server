@@ -1,0 +1,722 @@
+{
+	"version": "1.0.0",
+	"name": "serpent",
+	"scopeName": "source.serpent",
+	"patterns": [{
+		"include": "#source_wrapper"
+	}],
+	"repository": {
+		"source_wrapper": {
+      "patterns": [
+        {
+          "name": "meta.source.document.serpent",
+          "begin": "^",
+          "end": "$(?!\\n)",
+          "patterns": [
+            {
+              "include": "#root_context"
+            }
+          ]
+        }
+      ]
+    },		
+		"root_context": {		
+			"patterns": [
+				{"include":"#comment"},				
+				{"include":"#command_definitions"},											
+				{"include":"#invalid_syntax"}
+			]
+		},		
+		"invalid_syntax":{
+			"patterns":[
+				{
+					"name":"invalid.illegal.character.serpent",
+					"match":"(?<!\"[^\"]*)(?:[^a-zA-Z0-9\\.\\-\\s]+)(?![^\"]*\")"					
+				}				
+			]
+		},
+		"comment": {
+			"patterns": [
+				{
+					"name":"comment.line.double-slash.serpent",
+					"match":"(?:(\\#|\\%)(.*)$)",					
+					"captures":{"2":{"name":"comment.line.text.serpent"}}
+				},{
+					"name":"comment.line.double-slash.serpent",
+					"match":"(?:(?:/\\*)([^*]*)(?:\\*/))",
+					"captures":{"2":{"name":"comment.line.text.serpent"}}					
+				},{
+					"name":"comment.block.serpent",
+					"begin":"(/\\*)(.*)$",
+					"beginCaptures":{
+						"1":{"name":"punctuation.definition.comment.begin"},
+						"2":{"name":"comment.line.text.serpent"}
+					},
+					"end":"^(.*)(\\*/)",
+					"endCaptures":{
+						"1":{"name":"comment.line.text.serpent"},
+						"2":{"name":"punctuation.definition.comment.end"}
+					},					
+					"patterns":[
+						{
+							"name":"comment.line.text.serpent",
+							"match":"^([^*]*)$"
+						}
+					]					
+				}
+			]
+		},
+		"command_definitions":{
+			"patterns":[
+				{"include":"#cell_definition"},
+				{"include":"#dep_definition"},
+				{"include":"#det_definition"},
+				{"include":"#disp_definition"},
+				{"include":"#ene_definition"},
+				{"include":"#include_definition"},
+				{"include":"#lat_definition"},
+				{"include":"#mat_definition"},
+				{"include":"#mesh_definition"},
+				{"include":"#nest_definition"},
+				{"include":"#particle_definition"},
+				{"include":"#pbed_definition"},
+				{"include":"#pin_definition"},
+				{"include":"#plot_definition"},
+				{"include":"#set_definition"},
+				{"include":"#src_definition"},
+				{"include":"#surf_definition"},
+				{"include":"#therm_definition"},
+				{"include":"#trans_definition"}				
+			]
+		},
+		"cell_definition": {
+			"patterns": [
+				{	
+					"name":"meta.command.$1.serpent",
+					"begin": "(\\b(?:cell)\\b)\\s+((?:[0-9]+|[a-zA-Z]+))\\s+((?:[0-9]+))\\s+((\\b(fill)\\s+((?:[0-9]+))\\b)|(\\b(?:[a-zA-Z0-9]+)\\b\\s?))",
+					"beginCaptures":{
+						"1":{ "name":"entity.name.function.$1.serpent"},
+						"2":{ "name":"constant.character.id.serpent"},
+						"3":{ "name":"constant.numeric.universe.serpent"},
+						"6":{"name":"keyword.operator.fill.serpent"},
+						"7":{"name":"storage.type.reference.universe.serpent"},
+						"8":{"name":"storage.type.reference.material.serpent"}
+					},
+					"end":"(?:^|\\b)(?=cell|dep|det|disp|ene|include|lat|mat|mesh|nest|particle|pbed|pin|plot|set|src|surf|therm|trans)",
+					"patterns":[						
+						{"include":"#cell_parameters"},
+						{"include":"#comment"},
+						{"include":"#invalid_syntax"}
+					]			
+				}			
+			]
+		},
+		"cell_parameters":{			
+			"patterns":[
+				{
+					"name":"storage.type.reference.surface.serpent",
+					"match":"(-?\\d+)\\b"
+				}
+			]
+		},
+		"dep_definition": {
+			"patterns": [
+				{	
+					"name":"meta.command.burnup.serpent",
+					"begin": "((?<!\\w)(?:dep)(?!\\w))\\s+(bustep|butot|daystep|daytot|decstep|dectot)\\b",
+					"beginCaptures":{
+						"1":{ "name":"entity.name.function.$1.serpent"},
+						"2":{ "name":"keyword.operator.$1.$2.serpent"}
+					},
+					"end":"(?:^|\\b)(?=cell|dep|det|disp|ene|include|lat|mat|mesh|nest|particle|pbed|pin|plot|set|src|surf|therm|trans)",
+					"patterns":[						
+						{"include":"#dep_parameters"},
+						{"include":"#comment"},
+						{"include":"#invalid_syntax"}
+					]			
+				}			
+			]
+		},
+		"dep_parameters":{
+			"name":"variable.parameter.burnup.steps.serpent",
+			"match":"\\b\\d+\\.?\\d*\\b"
+		},
+		"det_definition": {
+			"patterns": [
+				{	
+					"name":"meta.command.$1.serpent",
+					"begin": "(\\b(?:det)\\b)\\s+([a-zA-Z0-9]+)\\b",
+					"beginCaptures":{
+						"1":{ "name":"entity.name.function.$1.serpent"},
+						"2":{ "name":"constant.character.id.serpent"}
+					},
+					"end":"(?:^|\\b)(?=cell|dep|det|disp|ene|include|lat|mat|mesh|nest|particle|pbed|pin|plot|set|src|surf|therm|trans)",
+					"patterns":[						
+						{"include":"#det_parameters"},
+						{"include":"#comment"},
+						{"include":"#invalid_syntax"}
+					]			
+				}			
+			]
+		},
+		"det_parameters":{			
+			"patterns":[
+				{
+					"name":"meta.parameter.detector.serpent",
+					"match":"(dr)\\s+(-[0-9]|[0-9]+)\\s+([a-zA-Z0-9]+)",
+					"captures":{
+						"1":{"name":"keyword.operator.$1.serpent"},
+						"2":{"name":"keyword.operator.reactionmode.serpent"},
+						"3":{"name":"storage.type.reference.material.serpent"}
+					}
+				},{
+					"name":"meta.parameter.detector.serpent",					
+					"match":"(dv)\\s+(-?[0-9]+\\.?[0-9]*)\\b",
+					"captures":{						
+						"1":{"name":"keyword.operator.$1.serpent"},
+						"2":{"name":"variable.parameter.detector.volume.serpent"}
+					}
+				},{
+					"name":"meta.parameter.detector.serpent",
+					"match":"(dc)\\s+([0-9]+)\\b",
+					"captures":{
+						"1":{"name":"keyword.operator.$1.serpent"},
+						"2":{"name":"storage.type.reference.cell.serpent"}
+					}
+				},{
+					"name":"meta.parameter.detector.serpent",
+					"match":"(du)\\s+([0-9]+)\\b",
+					"captures":{
+						"1":{"name":"keyword.operator.$1.serpent"},
+						"2":{"name":"storage.type.reference.universe.serpent"}
+					}
+				},{
+					"name":"meta.parameter.detector.serpent",
+					"match":"(dm)\\s+([a-zA-Z0-9]+)",
+					"captures":{								
+						"1":{"name":"keyword.operator.$1.serpent"},
+						"2":{"name":"storage.type.reference.material.serpent"}
+					}
+				},{
+					"name":"meta.parameter.detector.serpent",
+					"match":"(dl)\\s+([0-9]+)\\b",
+					"captures":{
+						"1":{"name":"keyword.operator.$1.serpent"},
+						"2":{"name":"storage.type.reference.lattice.serpent"}
+					}
+				},{
+					"name":"meta.parameter.detector.serpent",
+					"match":"(de)\\s+([0-9]+)\\b",
+					"captures":{
+						"1":{"name":"keyword.operator.$1.serpent"},
+						"2":{"name":"storage.type.reference.energygrid.serpent"}
+					}
+				},{
+					"name":"meta.parameter.detector.serpent",
+					"match":"(d(x|y|z))\\s+(-?[0-9]+)\\s+(-?[0-9]+)\\s+([0-9]+)\\b",
+					"captures":{						
+						"1":{"name":"keyword.operator.$1.serpent"},
+						"3":{"name":"constant.numeric.$2_min.serpent"},
+						"4":{"name":"constant.numeric.$2_max.serpent"},
+						"5":{"name":"constant.numeric.$2_bins.serpent"}
+					}
+				},{
+					"name":"meta.parameter.detector.serpent",
+					"match":"(dt)\\s+(-1|-2|-3)\\b",
+					"captures":{
+						"1":{"name":"keyword.operator.$1.serpent"},
+						"2":{"name":"keyword.operator.detectortype.serpent"}
+					}
+				},{
+					"name":"meta.parameter.detector.serpent",
+					"match":"(ds)\\s+([a-zA-Z0-9]+)\\s+(-1|0|1)\\b",
+					"captures":{
+						"1":{"name":"keyword.operator.$1.serpent"},
+						"2":{"name":"storage.type.reference.surface.serpent"},
+						"3":{"name":"keyword.operator.direction.vector.serpent"}
+					}
+				}
+			]
+		},
+		"disp_definition": {
+			"patterns": [
+				{	
+					"name":"meta.command.$1.serpent",
+					"begin": "(\\b(?:disp)\\b)\\s+((?:[0-9]+))\\s+((?:[0-9]+))\\b",
+					"beginCaptures":{
+						"1":{ "name":"entity.name.function.$1.serpent"},
+						"2":{ "name":"constant.numeric.universe.serpent"},
+						"3":{ "name":"storage.type.reference.universe.serpent"}
+					},
+					"end":"(?:^|\\b)(?=cell|dep|det|disp|ene|include|lat|mat|mesh|nest|particle|pbed|pin|plot|set|src|surf|therm|trans)",
+					"patterns":[						
+						{"include":"#disp_parameters"},
+						{"include":"#comment"},
+						{"include":"#invalid_syntax"}
+					]			
+				}			
+			]
+		},
+		"disp_parameters":{
+			"patterns":[
+				{
+					"name":"meta.parameter.implicit.fuelparticle.serpent",
+					"match":"(\\d+\\.?\\d*)\\s+(\\d+\\.?\\d*)\\s+(\\d+)\\b",
+					"captures":{
+						"1":{"name":"variable.parameter.packingfrac.serpent"},
+						"2":{"name":"variable.parameter.particleradius.serpent"},
+						"3":{"name":"storage.type.reference.universe.serpent"}
+					}
+				}
+			]
+		},
+		"ene_definition": {
+			"patterns": [
+				{	
+					"name":"meta.command.$1.serpent",
+					"begin": "((?<!\\w)(?:ene)(?!\\w))\\s*",
+					"beginCaptures":{
+						"1":{ "name":"entity.name.function.$1.serpent"}
+					},
+					"end":"(?:^|\\b)(?=cell|dep|det|disp|ene|include|lat|mat|mesh|nest|particle|pbed|pin|plot|set|src|surf|therm|trans)",
+					"patterns":[						
+					
+						{"include":"#comment"},
+						{"include":"#invalid_syntax"}
+					]			
+				}
+			
+		]
+		},
+		"include_definition": {
+			"patterns": [
+				{	
+					"name":"meta.command.$1.serpent",
+					"begin": "((?<!\\w)(?:include)(?!\\w))\\s*",
+					"beginCaptures":{
+						"1":{ "name":"entity.name.function.$1.serpent"},
+						"2":{ "name":"constant.character.filename.serpent"}
+					},
+					"end":"(?:^|\\b)(?=cell|dep|det|disp|ene|include|lat|mat|mesh|nest|particle|pbed|pin|plot|set|src|surf|therm|trans)",
+					"patterns":[						
+						{	"name":"string.quoted.filename.serpent",
+							"match":"\"[^\"]+\""},
+						{	"name":"string.unquoted.filename.serpent",
+							"match":"([a-zA-Z0-9\\.-]+)"},
+						{"include":"#comment"},
+						{"include":"#invalid_syntax"}
+					]			
+				}
+			
+		]
+		},
+		"lat_definition": {
+			"patterns": [
+				{	
+					"name":"meta.command.$1.serpent",
+					"begin": "(\\b(?:lat)\\b)\\s+(\\d+)\\s+((?:.)*)\\b",
+					"beginCaptures":{
+						"1":{ "name":"entity.name.function.$1.serpent"},
+						"2":{ "name":"constant.numeric.universe.serpent"},
+						"3":{
+							"name":"meta.lattice.type.serpent",
+							"patterns":[
+								{
+									"name":"meta.lattice.type.square.serpent",
+									"match":"(1|2|3)\\s+(\\d+\\.?\\d*)\\s+(\\d+\\.?\\d*)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+\\.?\\d*)\\b",
+									"captures":{
+										"1":{"name":"keyword.operator.lattice.type.serpent"},
+										"2":{"name":"variable.parameter.x_origin.serpent"},
+										"3":{"name":"variable.parameter.y_origin.serpent"},
+										"4":{"name":"variable.parameter.x_elements.serpent"},
+										"5":{"name":"variable.parameter.y_elements.serpent"},
+										"6":{"name":"variable.parameter.lattice.pitch.serpent"}
+									}
+								},
+								{
+									"name":"meta.lattice.type.circular.serpent",
+									"match":"(4)\\s+(\\d+\\.?\\d*)\\s+(\\d+\\.?\\d*)\\s+(\\d+)\\b",
+									"captures":{
+										"1":{"name":"keyword.operator.lattice.type.serpent"},
+										"2":{"name":"variable.parameter.x_origin.serpent"},
+										"3":{"name":"variable.parameter.y_origin.serpent"},
+										"4":{"name":"variable.parameter.cluster_rings.serpent"}
+									}
+								},
+								{
+									"name":"meta.lattice.type.infinite.serpent",
+									"match":"(6|7|8)\\s+(\\d+\\.?\\d*)\\s+(\\d+\\.?\\d*)\\s+(\\d+\\.?\\d*)\\s+(\\d+)\\b",
+									"captures":{
+										"1":{"name":"keyword.operator.lattice.type.serpent"},
+										"2":{"name":"variable.parameter.x_origin.serpent"},
+										"3":{"name":"variable.parameter.y_origin.serpent"},
+										"4":{"name":"variable.parameter.lattice.pitch.serpent"},
+										"5":{"name":"storage.type.reference.universe.serpent"}
+									}
+								},
+								{	
+									"name":"meta.lattice.type.stack.serpent",
+									"match":"(9)\\s+(\\d+\\.?\\d*)\\s+(\\d+\\.?\\d*)\\s+(\\d+)\\b",
+									"captures":{
+										"1":{"name":"keyword.operator.lattice.type.serpent"},
+										"2":{"name":"variable.parameter.x_origin.serpent"},
+										"3":{"name":"variable.parameter.y_origin.serpent"},
+										"4":{"name":"variable.parameter.axial_layers.serpent"}
+									}
+								},
+								{	"name":"meta.lattice.type.cubiodal.serpent",
+									"match":"(11)\\s+(\\d+\\.?\\d*)\\s+(\\d+\\.?\\d*)\\s+(\\d+\\.?\\d*)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+\\.?\\d*)(\\d+\\.?\\d*)\\s+(\\d+\\.?\\d*)\\s+\\b",
+									"captures":{
+										"1":{"name":"keyword.operator.lattice.type.serpent"},
+										"2":{"name":"variable.parameter.x_origin.serpent"},
+										"3":{"name":"variable.parameter.y_origin.serpent"},
+										"4":{"name":"variable.parameter.z_origin.serpent"},
+										"5":{"name":"variable.parameter.x_elements.serpent"},
+										"6":{"name":"variable.parameter.y_elements.serpent"},
+										"7":{"name":"variable.parameter.z_elements.serpent"},
+										"8":{"name":"variable.parameter.lattice.x_pitch.serpent"},
+										"9":{"name":"variable.parameter.lattice.y_pitch.serpent"},
+										"10":{"name":"variable.parameter.lattice.z_pitch.serpent"}
+									}}
+							]	
+						}
+					},
+					"end":"(?:^|\\b)(?=cell|dep|det|disp|ene|include|lat|mat|mesh|nest|particle|pbed|pin|plot|set|src|surf|therm|trans)",
+					"patterns":[						
+						{"include":"#lat_parameters"},
+						{"include":"#comment"},
+						{"include":"#invalid_syntax"}
+					]			
+				}			
+			]
+		},
+		"lat_parameters":{
+			"patterns":[
+				{
+					"name":"meta.lattice.circular.elements.serpent",
+					"match":"^(\\d+)\\s+(\\d+\\.?\\d*)\\s+(\\d+\\.?\\d*)\\s+((\\d+\\s+)(\\d+\\s*)*)\\b(?!\\s+\\d+|\\d+|\\d+\\.?\\d*)",
+					"captures":{
+						"1":{"name":"variable.parameter.sectors"},
+						"2":{"name":"variable.parameter.radius"},
+						"3":{"name":"variable.parameter.rotation_angle"},
+						"4":{"name":"variable.parameter.lattice.elements"}
+					}
+				},{
+					"name":"meta.lattice.stack.elements.serpent",
+					"match":"^\\b(\\d+\\.?\\d*)\\b\\s+(\\d+)\\b(?!\\s+\\d+|\\d+|\\d+\\.?\\d*)",
+					"captures":{
+						"1":{"name":"variable.parameter.axial_location"},
+						"2":{"name":"variable.parameter.lattice.elements"}
+					}
+				},{
+					"name":"meta.lattice.square.elements.serpent",
+					"match":"\\b(\\d+)(?!\\.)\\b",
+					"captures":{
+						"1":{"name":"variable.parameter.lattice.elements"}
+					}
+				}
+			]
+		},
+		"mat_definition": {
+			"patterns": [
+				{	
+					"name":"meta.command.$1.serpent",
+					"begin": "((?<!\\w)(?:mat)(?!\\w))\\s*",
+					"beginCaptures":{
+						"1":{ "name":"entity.name.function.$1.serpent"}
+					},
+					"end":"(?:^|\\b)(?=cell|dep|det|disp|ene|include|lat|mat|mesh|nest|particle|pbed|pin|plot|set|src|surf|therm|trans)",
+					"patterns":[						
+					
+						{"include":"#comment"},
+						{"include":"#invalid_syntax"}
+					]			
+				}
+			
+		]
+		},
+		"mesh_definition": {
+			"patterns": [
+				{	
+					"name":"meta.command.$1.serpent",
+					"begin": "((?<!\\w)(?:mesh)(?!\\w))\\s*",
+					"beginCaptures":{
+						"1":{ "name":"entity.name.function.$1.serpent"}
+					},
+					"end":"(?:^|\\b)(?=cell|dep|det|disp|ene|include|lat|mat|mesh|nest|particle|pbed|pin|plot|set|src|surf|therm|trans)",
+					"patterns":[						
+					
+						{"include":"#comment"},
+						{"include":"#invalid_syntax"}
+					]			
+				}
+			
+		]
+		},
+		"nest_definition": {
+			"patterns": [
+				{	
+					"name":"meta.command.$1.serpent",
+					"begin": "(\\b(?:nest)\\b)\\s+(\\d+)\\s+(inf|p(x|y|z)|sph|sqc|cube|hex(x|y)c|dode|octa|plane|cyl(x|y|z)?|hex(x|y)prism|cross|con(x|y|(?:z|e))|cuboid|pad|quadratic)\\b",
+					"beginCaptures":{
+						"1":{ "name":"entity.name.function.$1.serpent"},
+						"2":{ "name":"constant.numeric.universe.serpent"},
+						"3":{"name":"keyword.operator.surface.$3.serpent"}
+					},
+					"end":"(?:^|\\b)(?=cell|dep|det|disp|ene|include|lat|mat|mesh|nest|particle|pbed|pin|plot|set|src|surf|therm|trans)",
+					"patterns":[						
+						{"include":"#pin_parameters"},
+						{"include":"#comment"},
+						{"include":"#invalid_syntax"}
+					]			
+				}
+			
+		]
+		},
+		"particle_definition": {
+			"patterns": [
+				{	
+					"name":"meta.command.$1.serpent",
+					"begin": "((?<!\\w)(?:particle)(?!\\w))\\s*",
+					"beginCaptures":{
+						"1":{ "name":"entity.name.function.$1.serpent"}
+					},
+					"end":"(?:^|\\b)(?=cell|dep|det|disp|ene|include|lat|mat|mesh|nest|particle|pbed|pin|plot|set|src|surf|therm|trans)",
+					"patterns":[						
+					
+						{"include":"#comment"},
+						{"include":"#invalid_syntax"}
+					]			
+				}
+			
+		]
+		},
+		"pbed_definition": {
+			"patterns": [
+				{	
+					"name":"meta.command.$1.serpent",
+					"begin": "(\\b(?:pbed)\\b)\\s+((?:[0-9]+))\\s+((?:[0-9]+))\\s+(\"[^\"]+\")\\b",
+					"beginCaptures":{
+						"1":{ "name":"entity.name.function.$1.serpent"},
+						"2":{ "name":"constant.numeric.universe.serpent"},
+						"3":{ "name":"storage.type.reference.universe.serpent"},
+						"4":{ "name":"string.quoted.filename.serpent"}
+					},
+					"end":"(?:^|\\b)(?=cell|dep|det|disp|ene|include|lat|mat|mesh|nest|particle|pbed|pin|plot|set|src|surf|therm|trans)",
+					"patterns":[						
+						{"include":"#pbed_parameters"},
+						{"include":"#comment"},
+						{"include":"#invalid_syntax"}
+					]			
+				}			
+			]
+		},
+		"pbed_parameters":{},
+		"pin_definition": {
+			"patterns": [
+				{	
+					"name":"meta.command.$1.serpent",
+					"begin": "(\\b(?:pin)\\b)\\s+(\\d+)\\b",
+					"beginCaptures":{
+						"1":{ "name":"entity.name.function.$1.serpent"},
+						"2":{ "name":"constant.numeric.universe.serpent"}
+					},
+					"end":"(?:^|\\b)(?=cell|dep|det|disp|ene|include|lat|mat|mesh|nest|particle|pbed|pin|plot|set|src|surf|therm|trans)",
+					"patterns":[						
+						{"include":"#pin_parameters"},
+						{"include":"#comment"},
+						{"include":"#invalid_syntax"}
+					]			
+				}			
+			]
+		},
+		"pin_parameters":{
+			"patterns": [
+				{	"name":"meta.parameter.pin.serpent",
+					"match":"([a-zA-Z0-9]+)\\b(\\s+(\\d+\\.?\\d*)\\b)?",
+					"captures":{
+						"1":{"name":"storage.type.reference.material.serpent"},
+						"3":{"name":"variable.parameter.radius.serpent"}
+					}
+				}
+			]
+		},
+		"plot_definition": {
+			"patterns": [
+				{	
+					"name":"meta.command.$1.serpent",
+					"begin": "(\\b(?:plot)\\b)\\s+(1|2|3)\\s+(-?\\d+)\\s+(-?\\d+)\\b(\\s+(-?\\d+\\.?\\d*)\\s+(-?\\d+\\.?\\d*)\\s+(-?\\d+\\.?\\d*)\\s+(-?\\d+\\.?\\d*)\\s+(-?\\d+\\.?\\d*)\\b)?",
+					"beginCaptures":{
+						"1":{ "name":"entity.name.function.$1.serpent"},
+						"2":{ "name":"keyword.operator.orientation.serpent"},
+						"3":{ "name":"variable.parameter.width.serpent"},
+						"4":{ "name":"variable.parameter.height.serpent"},
+						"6":{ "name":"variable.parameter.axial_position.serpent"},
+						"7":{ "name":"variable.parameter.minimum.x-axis.serpent"},
+						"8":{ "name":"variable.parameter.maximum.x-axis.serpent"},
+						"9":{ "name":"variable.parameter.minimum.y-axis.serpent"},
+						"10":{ "name":"variable.parameter.maximum.y-axis.serpent"}
+					},
+					"end":"(?:^|\\b)(?=cell|dep|det|disp|ene|include|lat|mat|mesh|nest|particle|pbed|pin|plot|set|src|surf|therm|trans)",
+					"patterns":[								
+						{"include":"#comment"},
+						{"include":"#invalid_syntax"}
+					]			
+				}
+			
+		]
+		},
+		"set_definition": {
+			"patterns": [
+				{	
+					"name":"meta.command.$1.serpent",
+					"begin": "((?<!\\w)(?:set)(?!\\w))\\s*",
+					"beginCaptures":{
+						"1":{ "name":"entity.name.function.$1.serpent"}
+					},
+					"end":"(?:^|\\b)(?=cell|dep|det|disp|ene|include|lat|mat|mesh|nest|particle|pbed|pin|plot|set|src|surf|therm|trans)",
+					"patterns":[						
+					
+						{"include":"#comment"},
+						{"include":"#invalid_syntax"}
+					]			
+				}
+			
+		]
+		},
+		"src_definition": {
+			"patterns": [
+				{	
+					"name":"meta.command.$1.serpent",
+					"begin": "((?<!\\w)(?:src)(?!\\w))\\s*",
+					"beginCaptures":{
+						"1":{ "name":"entity.name.function.$1.serpent"}
+					},
+					"end":"(?:^|\\b)(?=cell|dep|det|disp|ene|include|lat|mat|mesh|nest|particle|pbed|pin|plot|set|src|surf|therm|trans)",
+					"patterns":[						
+						
+						{"include":"#comment"},
+						{"include":"#invalid_syntax"}
+					]			
+				}
+			
+		]
+		},
+		"surf_definition": {
+			"patterns": [
+				{	
+					"name":"meta.command.$1.serpent",
+					"begin": "(\\b(?:surf)\\b)\\s+((?:[0-9]+))\\b",
+					"beginCaptures":{
+						"1":{ "name":"entity.name.function.$1.serpent"},
+						"2":{ "name":"constant.character.id.serpent"}
+					},
+					"end":"(?:^|\\b)(?=cell|dep|det|disp|ene|include|lat|mat|mesh|nest|particle|pbed|pin|plot|set|src|surf|therm|trans)",
+					"patterns":[						
+						{"include":"#surf_parameters"},
+						{"include":"#comment"},
+						{"include":"#invalid_syntax"}
+					]			
+				}
+			
+			]
+		},
+		"surf_parameters":{
+			"patterns":[
+				{
+					"name":"meta.parameter.surface.serpent",
+					"match":"(inf)\\b",
+					"captures":{
+						"1":{"name":"keyword.operator.surface.$1.serpent"}
+					}
+				},{
+					"name":"meta.parameter.surface.serpent",					
+					"match":"(p(x|y|z))\\s+((-?\\d+\\.?\\d*))\\b",
+					"captures":{						
+						"1":{"name":"keyword.operator.surface.$1.serpent"},						
+						"3":{"name":"variable.parameter.surface.$1.serpent"}
+					}
+				},{
+					"name":"meta.parameter.surface.serpent",
+					"match":"(sph|sqc|cube|hex(x|y)c|dode|octa|plane)\\s+((?:(-?\\d+\\.?\\d*)\\b\\s*){4}\\b)",
+					"captures":{
+						"1":{"name":"keyword.operator.surface.$1.serpent"},						
+						"3":{"name":"variable.parameter.surface.$1.serpent"}
+					}
+				},{
+					"name":"meta.parameter.surface.serpent",
+					"match":"(cyl(x|y|z)?|hex(x|y)prism|cross|con(x|y|(?:z|e)))\\s+((?:(-?\\d+\\.?\\d*)\\b\\s*){5}\\b)",
+					"captures":{
+						"1":{"name":"keyword.operator.surface.$1.serpent"},						
+						"5":{"name":"variable.parameter.surface.$1.serpent"}
+					}
+				},{
+					"name":"meta.parameter.surface.serpent",
+					"match":"(cuboid|pad)\\s+((?:(-?\\d+\\.?\\d*)\\b\\s*){6}\\b)",
+					"captures":{
+						"1":{"name":"keyword.operator.surface.$1.serpent"},						
+						"2":{"name":"variable.parameter.surface.$1.serpent"}
+					}
+				},{
+					"name":"meta.parameter.surface.serpent",
+					"match":"(quadratic)\\s+((?:(-?\\d+\\.?\\d*)\\b\\s*){10}\\b)",
+					"captures":{
+						"1":{"name":"keyword.operator.surface.$1.serpent"},						
+						"2":{"name":"variable.parameter.surface.$1.serpent"}
+					}
+				}
+			]
+		},
+		"therm_definition": {
+			"patterns": [
+				{	
+					"name":"meta.command.$1.serpent",
+					"begin": "(\\b(?:therm)\\b)\\s+",
+					"beginCaptures":{
+						"1":{ "name":"entity.name.function.$1.serpent"}
+					},
+					"end":"(?:^|\\b)(?=cell|dep|det|disp|ene|include|lat|mat|mesh|nest|particle|pbed|pin|plot|set|src|surf|therm|trans)",
+					"patterns":[
+						{"include":"#comment"},
+						{"include":"#invalid_syntax"}
+					]			
+				}			
+			]
+		},
+		"trans_definition": {
+			"patterns": [
+				{	
+					"name":"meta.command.$1.serpent",
+					"begin": "(\\b(?:trans)\\b)\\s+(\\d+\\b)\\s+((((\\b-?\\d+\\.?\\d*\\b)(?:\\b|\\s+)){3}(?!\\d|\\s+\\d))|((-?\\d+\\.?\\d*)(?:\\b|\\s+)){6}(?!\\d|\\s+\\d)|((-?\\d+\\.?\\d*)(?:\\b|\\s+)){12})",
+					"beginCaptures":{
+						"1":{ "name":"entity.name.function.$1.serpent"},
+						"2":{ "name":"storage.type.reference.universe.serpent"},
+						"3":{	"name":"variable.parameter.transformations.serpent"}
+					},
+					"end":"(?:^|\\b)(?=cell|dep|det|disp|ene|include|lat|mat|mesh|nest|particle|pbed|pin|plot|set|src|surf|therm|trans)",
+					"patterns":[						
+						{"include":"#comment"},
+						{"include":"#invalid_syntax"}
+					]			
+				}
+			
+		]
+		},
+		"negatable_integers":{
+			"name":"constant.numeric.negatable.serpent",
+			"match":"(-?\\d+)\\b"			
+		},
+		"positive_integers":{
+			"name":"constant.numeric.negatable.serpent",
+			"match":"(\\d+)\\b"			
+		},
+		"positive_numbers":{
+			"name":"constant.numeric.positives.serpent",			
+			"match":"\\b\\d+\\.?\\d*\\b"
+		},
+		"negatable_numbers":{
+			"name":"constant.numeric.positives.serpent",			
+			"match":"\\b-?\\d+\\.?\\d*\\b"
+		}		
+	}
+}

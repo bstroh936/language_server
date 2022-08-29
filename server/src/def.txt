@@ -1,0 +1,948 @@
+branch NAME [ repm MAT1 MAT2 ]
+            [ repu UNI1 UNI2 ]
+            [ stp MAT DENS TEMP THERM1 SABL1 SABH1 THERM2 SABL2 SABH2 ... ]
+            [ tra TGT TRANS ] 
+            [ xenon OPT ] 
+            [ samarium OPT ] 
+            [ norm NSF ] 
+            [ gcu UNI2 ] 
+            [ reptrc FILE1 FILE2 ]
+            [ var VNAME VAL ]
+		Defines the variations invoked for a branch in the automated burnup sequence. Input values:				
+		NAME	 : branch name
+		MAT1	 : name of the replaced material
+		MAT2	 : name of the replacing material
+		UNI1	 : name of the replaced universe
+		UNI2	 : name of the replacing universe
+		MAT	 : name of the material for which density and temperature are adjusted
+		DENS	 : material density after adjustment (positive entries for atomic, negative entries for mass densities)
+		TEMP	 : material temperature after adjustment, or -1 if no adjustment in temperature
+		THERMn	 : nth thermal scattering data associated with the material
+		SABLn	 : name of the nth S(α, β) library for temperature below the given value
+		SABHn	 : name of the nth S(α, β) library for temperature above the given value
+		TGT	 : target universe, surface or cell
+		TRANS	 : name of the applied transformation
+		OPT	 : option for setting poison concentrations (0 = set to zero, 1 = use values from restart file)
+		NSF	 : normalization scaling factor
+		FILE1	 : file path of the replaced transport correction curve data
+		FILE2	 : file path of the replacing transport correction curve data
+		VNAME	 : variable name
+		VAL	 : variable value
+
+casematrix CASE_NAME
+           NHIS [ HIS_BR1 HIS_BR2 ... HIS_BRNHIS ]
+           NBU  [ BU1 BU2 ... BUNBU ] 
+           NBR1 [ BR1,1 BR1,2 ... BR1,NBR1 ]
+           NBR2 [ BR2,1 BR2,2 ... BR1,NBR2 ]
+           ...
+		Defines the casematrix for the automated burnup sequence. Input values:			 
+		CASE_NAME	 : name of the casematrix
+		NHIS	 : number of history variations
+		HIS_BRk	 : name of the kth history variation branch
+		NBU	 : number of burnup points
+		BUn	 : burnup steps at which the momentary variation branches are invoked
+		NBRm	 : number branches in the mth dimension of the burnup matrix
+		BRm,i	 : name of the ith branch in the mth dimension
+
+cell NAME UNI0 MAT [ SURF1 SURF2 ... ] 
+		Defines a material cell. Input values:
+		NAME	 : cell name
+		UNI0	 : universe where the cell belongs to
+		MAT	 : material that fills the cell
+		SURFn	 : surface list
+
+cell NAME UNI0 fill UNI1 [ SURF1 SURF2 ... ]
+		Defines a filled cell. Input values:
+		NAME	 : cell name
+		UNI0	 : universe where the cell belongs to
+		UNI1	 : universe that fills the cell
+		SURFn	 : surface list
+
+cell NAME UNI0 outside [ SURF1 SURF2 ... ]
+		Defines an outside cell. Input values:
+		NAME	 : cell name
+		UNI0	 : universe where the cell belongs to
+		SURFn	 : surface list
+
+coef NBU [ BU1 BU2 ... ] 
+         [ NBR1 BR1,1 BR1,2 ... ]
+         [ NBR2 BR2,1 BR2,2 ... ]
+	Defines the coefficient matrix for the automated burnup sequence. Input values:			 
+	NBU	 : number of burnup points
+	BUn	 : burnup steps at which the branches are invoked
+	NBRm	 : number branches in the mth dimension of the burnup matrix
+	BRm,i	 : name of the ith branch in the mth dimension
+
+datamesh NAME 1 USELC NX XMIN XMAX NY YMIN YMAX NZ ZMIN ZMAX
+		Defines a regular Cartesian mesh that can be linked to detectors, interfaces etc.
+		NAME	 : mesh name
+		USELC	 : use lowest level coordinates (1/yes) instead of global coordinates (0/no) for the mesh search
+		NX	 : number of cells in the x direction
+		XMIN	 : mesh lower x boundary
+		XMAX	 : mesh higher x boundary
+		NY	 : number of cells in the y direction
+		YMIN	 : mesh lower y boundary
+		YMAX	 : mesh higher y boundary
+		NZ	 : number of cells in the z direction
+		ZMIN	 : mesh lower z boundary
+		ZMAX	 : mesh higher z boundary
+datamesh NAME 2 USELC NR RMIN RMAX NPHI 
+		Defines a regular 2D cylindrical mesh that can be linked to detectors, interfaces etc.
+		NAME	 : mesh name
+		USELC	 : use lowest level coordinates (1/yes) instead of global coordinates (0/no) for the mesh search
+		NR	 : number of cells in the radial direction
+		RMIN	 : mesh inner radial boundary
+		RMAX	 : mesh outer radial boundary
+		NPHI	 : number of cells in the polar angle direction
+datamesh NAME 4 USELC X0 Y0 PITCH ZMIN ZMAX NX NY NZ
+		Defines a regular x-type hexagonal mesh that can be linked to detectors, interfaces etc.
+		NAME	 : mesh name
+		USELC	 : use lowest level coordinates (1/yes) instead of global coordinates (0/no) for the mesh search
+		X0	 : mesh horizontal origin x-coordinate
+		Y0	 : mesh horizontal origin y-coordinate
+		PITCH	 : mesh horizontal pitch (equal to cell flat-to-flat width)
+		ZMIN	 : mesh lower z boundary
+		ZMAX	 : mesh higher z boundary
+		NX	 : number of cells in the x direction
+		NY	 : number of cells in the y direction
+		NZ	 : number of cells in the z direction		
+datamesh NAME 5 USELC X0 Y0 PITCH ZMIN ZMAX NX NY NZ
+		Defines a regular y-type hexagonal mesh that can be linked to detectors, interfaces etc.
+		NAME	 : mesh name
+		USELC	 : use lowest level coordinates (1/yes) instead of global coordinates (0/no) for the mesh search
+		X0	 : mesh horizontal origin x-coordinate
+		Y0	 : mesh horizontal origin y-coordinate
+		PITCH	 : mesh horizontal pitch (equal to cell flat-to-flat width)
+		ZMIN	 : mesh lower z boundary
+		ZMAX	 : mesh higher z boundary
+		NX	 : number of cells in the x direction
+		NY	 : number of cells in the y direction
+		NZ	 : number of cells in the z direction
+datamesh NAME 6 USELC NX NY NZ  X1 ... XNX+1  Y1 ... YNY+1  Z1 ... ZNZ+1 
+		Defines an irregular Cartesian mesh that can be linked to detectors, interfaces etc.
+		NAME	 : mesh name
+		USELC	 : use lowest level coordinates (1/yes) instead of global coordinates (0/no) for the mesh search
+		NX	 : number of cells in the x direction
+		NY	 : number of cells in the y direction
+		NZ	 : number of cells in the z direction
+		Xi	 : NX + 1 mesh boundaries in the x direction
+		Yi	 : NY + 1 mesh boundaries in the y direction
+		Zi	 : NZ + 1 mesh boundaries in the z direction
+datamesh NAME 8 USELC NR NPHI  R1 ... RNR+1 
+		Defines a radially irregular 2D cylindrical mesh that can be linked to detectors, interfaces etc.
+		NAME	 : mesh name
+		USELC	 : use lowest level coordinates (1/yes) instead of global coordinates (0/no) for the mesh search
+		NR	 : number of cells in the radial direction
+		NPHI	 : number of cells in the polar angle direction
+		Ri	 : NR + 1 mesh boundaries in the r direction
+datamesh NAME 9 NLEVEL  MESH1 ... MESHNLEVEL 
+		Defines a regular nested mesh that can be linked to detectors, interfaces etc.
+		NAME	 : mesh name
+		USELC	 : use lowest level coordinates (1/yes) instead of global coordinates (0/no) for the mesh search
+		NLEVEL	 : number of nested levels in this mesh
+		MESHi	 : sub mesh to use at level i
+
+dep STYPE [ STEP1 STEP2 ... ]
+		Defines depletion history with steps and activates depletion calculation mode. Input values:
+		STYPE	 : step type
+		STEPn	 : depletion step list
+			Type	Description	Quantity	Unit
+			bustep	Depletion step	Burnup interval	MWd/kgHM
+			butot	Depletion step	Cumulative burnup	MWd/kgHM
+			daystep	Depletion step	Time interval	d
+			daytot	Depletion step	Cumulative time	d
+			decstep	Decay step	Time interval	d
+			dectot	Decay step	Cumulative time	d
+			actstep	Activation step	Time interval	d
+			acttot	Activation step	Cumulative time	d
+dep pro REP_NAME STYPE [ STEP1 STEP2 ... ]
+		Links a reprocessor to the depletion calculation. Input values:
+		REP_NAME	 : reprocessor name
+		STYPE	 : step type
+		STEPn	 : depletion step list
+dep bra PTR_BRANCH
+		The reprocessing system or reprocessor controller is defined using the rep card.
+
+det NAME [ PART ]
+         [ dr MT MAT ] 
+         [ dv VOL ]
+         [ dc CELL ]
+         [ du UNI ]
+         [ dm MAT ]
+         [ dl LAT ] 
+         [ dx XMIN XMAX NX ]
+         [ dy YMIN YMAX NY ]
+         [ dz ZMIN ZMAX NZ ]
+         [ dn TYPE MIN1 MAX1 N1 MIN2 MAX2 N2 MIN3 MAX3 N3 ] 1/2 [ dn TYPE N1 N2 N3 LIM11...LIM1N+1 LIM21...LIM2N+1 LIM31...LIM3N+1 ] 3/4
+         [ dh TYPE X0 Y0 PITCH N1 N2 ZMIN ZMAX NZ ]
+         [ dumsh UNI NC CELL0 BIN0 CELL1 BIN1 ... ]
+         [ de EGRID ]
+         [ di TBIN ]
+         [ ds SURF DIR ]
+         [ dir COSX COSY COSZ ]
+         [ dtl SURF ]
+         [ df FILE FRACTION ]
+         [ dt TYPE PARAM ]
+         [ dhis OPT ]
+         [ dfl FLAG OPT ]
+         [ da MAT FLX ]
+         [ dfet TYPE PARAMS ]
+         [ dphb PHB ]
+         [ dmesh MESH ]
+
+		Detector definition. The first parameter:
+				PART	 : particle type (n = neutron, p = photon) is optional in single particle simulations. The remaining parameters are defined by separate key words followed by the input values.
+		Detector response (dr):
+				MT	 : response number
+				MAT	 : material name or "void" if the material at the collision point is used
+		Detector volume (dv):
+				VOL	 : volume in cm3 (3D geometry) or cross-sectional area in cm2 (2D geometry)
+		Detector cell (dc):
+				CELL	 : cell name where the detector is scored
+		Detector universe (du):
+				UNI	 : universe name where the detector is scored
+		Detector material (dm):
+				MAT	 : material name where the detector is scored
+		Detector lattice (dl):
+				LAT	 : lattice name where the detector is scored
+		Cartesian mesh detector (dx, dy and dz):
+				XMIN	 : minimum x-coordinate of the detector mesh
+				XMAX	 : maximum x-coordinate of the detector mesh
+				NX	 : number of x-bins
+				YMIN	 : minimum y-coordinate of the detector mesh
+				YMAX	 : maximum y-coordinate of the detector mesh
+				NY	 : number of y-bins
+				ZMIN	 : minimum z-coordinate of the detector mesh
+				ZMAX	 : maximum z-coordinate of the detector mesh
+				NZ	 : number of z-bins
+		Curvilinear and unevenly-spaced mesh detector (dn):
+				TYPE	 : Type of curvilinear mesh - 1 = cylindrical (dimensions r, θ, z), 2 = spherical (dimensions r, θ, φ), 3 = unevenly-spaced orthogonal (dimensions x, y, z), 4 = unevenly-spaced cylindrical (dimensions r, θ, z)
+				MINn	 : Minimum value of coordinate n for the mesh division (lengths in cm, angles in degrees).
+				MAXn	 : Maximum value of coordinate n for the mesh division (lengths in cm, angles in degrees).
+				Nn	 : Number of bins in the n coordinate direction (the radial division will be equal r, not equal volume, in evenly-spaced types 1/2).
+				LIMnm	 : Mesh boundary m in the n coordinate direction (lengths in cm, angles in degrees).
+		Hexagonal mesh detector (dh):
+				TYPE	 : Type of hexagonal mesh (2 = flat face perpendicular to x-axis, 3 = flat face perpendicular to y-axis)
+				X0, Y0	 : coordinates of mesh center
+				PITCH	 : mesh pitch
+				N1, N1	 : mesh size
+				ZMIN	 : minimum z-coordinate of the detector mesh
+				ZMAX	 : maximum z-coordinate of the detector mesh
+				NZ	 : number of z-bins
+		Unstructured mesh detector (dumsh):
+				UNI	 : universe of the unstructured mesh based geometry
+				NC	 : number of mesh cell bins included in the output
+				CELLn, BINn	 : cell-bin index pairs defining the mapping
+		Detector energy binning (de):
+				EGRID	 : energy grid name
+		Detector time binning (di):
+				TBIN	 : time bin structure name
+		Surface current / flux detector (ds):
+				SURF	 : surface name
+				DIR	 : direction with respect to surface normal (-2 = flux, -1 = inward current, 1 = outward current, 0 = net current)
+		Detector direction vector (dir):
+				COSY	 : component of the direction vector parallel to x-axis
+				COSY	 : component of the direction vector parallel to y-axis
+				COSZ	 : component of the direction vector parallel to z-axis
+		Super-imposed track-length detector (dtl):
+				SURF	 : surface inside which the detector is scored
+		Detector file (df):
+				FILE	 : file name where the scored points are written
+				FRAC	 : fraction of recorded scores and ascii/binary option (positive value = ascii, negative value = binary)
+		Special types (dt):
+				TYPE	 : special type (see below)
+				PARAM	 : additional parameters
+					The types are:
+					-1	= cumulative spectrum
+					-2	= division by energy width
+					-3	= division by lethargy width
+					-4	= sum over cell or material bins
+					-5	= importance weighting
+					-6	= sum over number of scores
+					2	= multiply result with another detector defined by PARAM
+					3	= divide result with another detector defined by PARAM
+					4	= multiply response function by (local) temperature
+				History collection option (dhis):
+						OPT	 : option to collect histories (0 = no, 1 = yes)
+				Detector flagging (dfl):
+						FLAG	 : flag number (between 1 and 64)
+						OPT	 : flagging option (0 = reset if scored, 1 = set if scored, -2/2 score if set -3/3 score if not set)
+				Activation detector (da):
+						MAT	 : activated material
+						FLX	 : flux applied to activation
+				Functional Expansion Tally detector (dfet):
+						TYPE	 : functional expansion type
+						PARAMS	 : other options, specific to each functional expansion type TYPE
+						Cartesian	XMIN XMAX XORDER YMIN YMAX YORDER ZMIN ZMAX ZORDER	1
+						Cylindrical	RMAX RORDER HMIN HMAX HORDER HORIENTATION	2
+				Detector spatial integration domain and binning based on a generic data mesh (dmesh):
+						MESH	 : name of the datamesh to use for defining the spatial integration domain and binning for the detector scores
+
+div MAT [ sep LVL ] 
+        [ subx NX XMIN XMAX ] equal volume [ subx -NX X1 X2 ... XN+1 ] manually spaced limits
+        [ suby NY YMIN YMAX ] equal volume [ suby -NY Y1 Y2 ... YN+1 ] manually spaced limits 
+        [ subz NZ ZMIN ZMAX ] equal volume [ subz -NZ Z1 Z2 ... ZN+1 ] manually spaced limits
+        [ subr NR RMIN RMAX ] equal volume [ subr -NR R1 R2 ... RN+1 ] manually spaced limits
+        [ subs NS S0 ]       equal volume [ subs -NS S1 S2 ... SN+1 ] manually spaced limits
+        [ lims FLAG ]				
+		Divides a material into a number of sub-zones. Input values:
+		MAT	 : name of the divided material
+		LVL	 : geometry level at which the cell-wise division takes place (0 = no division, 1 = last level, 2 = 2nd last level, etc.)
+		NX	 : number of x-zones
+		XMIN	 : minimum x-coordinate (cm)
+		XMAX	 : maximum x-coordinate (cm)
+		Xn	 : x-coordinate boundaries (cm)
+		NY	 : number of y-zones
+		YMIN	 : minimum y-coordinate (cm)
+		YMAX	 : maximum y-coordinate (cm)
+		Yn	 : y-coordinate boundaries (cm)
+		NZ	 : number of z-zones
+		ZMIN	 : minimum z-coordinate (cm)
+		ZMAX	 : maximum z-coordinate (cm)
+		Zn	 : z-coordinate boundaries (cm)
+		NR	 : number of radial zones
+		RMIN	 : minimum radial coordinate (cm)
+		RMAX	 : maximum radial coordinate (cm)
+		Rn	 : radial coordinate boundaries (cm)
+		NS	 : number of angular sectors
+		S0	 : zero position of angular division (degrees)
+		Sn	 : angular-sector boundaries (degrees)
+		FLAG	 : flag for mapping regions outside (material) limits to divide material - on (1/yes) or off (0/no)
+
+dtrans (detector mesh transformation)
+	See transformations.
+
+ene (energy grid definition)
+ene NAME 1 E0 E1 ...
+ene NAME 2 N Emin Emax
+ene NAME 3 N Emin Emax
+ene NAME 4 GRID
+		Defines an energy grid structure. Input values:
+		NAME	: energy grid name
+		Ei	: bin boundaries (type 1)
+		N	: number of equi-width bins (types 2 and 3)
+		Emin	: minimum energy (types 2 and 3)
+		Emax	: maximum energy (types 2 and 3)
+		GRID	: name of the pre-defined grid (type 4)
+
+ftrans (fill transformation)
+	See transformations.
+
+fun NAME TYPE [ ... ]
+		Defines a function that can be used with detector responses. Input values:
+		NAME	: function name
+		TYPE	: function type (currently only supported type is 1 = point-wise tabular data)
+		The syntax for type 1 is:
+				fun NAME 1 INTT X1 F1 X2 F2 ...
+				where:
+				INTT	: is the interpolation type (1 = histogram, 2 = lin-lin, 3 = lin-log, 4 = log-lin, 5 = log-log)
+				Xi, Fi	: are the tabulated variable-value pairs
+
+hisv [ BU1 NBR1 BR1,1 BR1,2 ... BR1,NBR1 ]
+		[ BU2 NBR2 BR2,1 BR2,2 ... BR2,NBR2 ]
+					...
+		Defines the history variation matrix for the automated burnup sequence. Input values:
+		BUn	 : burnup steps at which the branches are invoked
+		NBRn	 : number branches in the n-th burnup step
+		BRn,i	 : name of the i-th branch in the n-th burnup step
+
+
+ifc FILE [setinmat NMAT MAT1 MAT2 ... MATNMAT ]
+				[setoutmat NMAT MAT1 MAT2 ... MATNMAT ]
+		Links a multi-physics interface file to be used with the current input. Input values:
+		FILE	: path to the multi-physics interface file
+		The optional cards are explained below.
+				setinmat adds the possibility to link multiple input materials to the same interface, i.e. the same interface gives temperatures and densities (density factors) for multiple materials.
+				setoutmat adds the possibility to link multiple output materials to the same interface, i.e. the same interface gives temperatures and densities (density factors) for multiple materials.
+				NMAT	: number of materials to link to the interface
+				MATi	: name of the ith material linked to the interface
+
+include FILE
+		Reads another input file. Input values:
+		FILE	 : name of the input file
+
+lat UNI TYPE X0 Y0 NX NY PITCH UNI1 UNI2 ...
+		Defines a finite two-dimensional lattice in xy-plane with square or X- or Y-type hexagonal elements. The lattice is infinite in z-direction. Input values:
+		UNI	 : universe name of the lattice
+		TYPE	 : lattice type
+		X0	 : x-coordinate of the lattice origin (origin is in the center of the lattice).
+		Y0	 : y-coordinate of the lattice origin (origin is in the center of the lattice).
+		NX	 : number of lattice elements in x-direction
+		NY	 : number of lattice elements in y-direction
+		PITCH	 : lattice pitch
+		UNIn	 : list of universes filling the lattice positions
+		Type	Description
+			1	Square lattice
+			2	X-type hexagonal lattice
+			3	Y-type hexagonal lattice
+			14	X-type triangular lattice
+
+lat UNI TYPE X0 Y0 PITCH UNI1
+		Defines an infinite two-dimensional lattice in xy-plane with infinitely repeating square or X- or Y-type hexagonal element. The lattice is infinite in z-direction.
+		UNI	 : universe name of the lattice
+		TYPE	 : lattice type
+		X0	 : x-coordinate of the lattice origin
+		Y0	 : y-coordinate of the lattice origin
+		PITCH	 : lattice pitch
+		UNI1	 : universe name of the universe filling all lattice positions
+		Possible lattice types are:
+			Type	Description
+			6	Square lattice
+			7	Y-type hexagonal lattice
+			8	X-type hexagonal lattice
+
+lat UNI TYPE X0 Y0 NR NS,1 RADIUS1 THETA1 UNI1,1 UNI2,1 ... NS,2 RADIUS2 THETA2 UNI1,2 UNI2,2 ... ...
+		Defines a finite two-dimensional circular cluster array lattice in xy-plane. The lattice is infinite in z-direction.
+		UNI	 : universe name of the lattice
+		TYPE	 : lattice type
+		X0	 : x-coordinate of the lattice origin
+		Y0	 : y-coordinate of the lattice origin
+		NR	 : number of rings in the array
+		NS,R	 : number of sectors in Rth ring
+		RADIUSR	 : central radius of Rth ring
+		THETAR	 : angle of rotation of Rth ring in degrees
+		UNIN,R	 : list of universes filling the sector positions in Rth ring
+		Possible lattice type is:
+			Type	Description
+			4	Circular cluster array
+
+lat UNI TYPE X0 Y0 NL Z1 UNI1 Z2 UNI2 ...
+		Defines a finite one-dimensional vertical stack in z-direction. The stack is infinite in xy-plane.
+		UNI	 : universe name of the lattice
+		TYPE	 : lattice type
+		X0	 : x-coordinate of the lattice origin
+		Y0	 : y-coordinate of the lattice origin
+		NL	 : number of lattice elements in z-direction (number of axial layers)
+		Zn	 : z-coordinate of the nth lattice element (lower boundary of the axial layer)
+		UNIn	 : universe name filling the nth lattice position
+		Possible lattice type is:
+			Type	Description
+			9	Vertical stack
+
+lat UNI TYPE X0 Y0 Z0 NX NY NZ PITCHX PITCHY PITCHZ UNI1 UNI2 ...
+		Defines a finite three-dimensional lattice in xyz-space with cuboidal or X- or Y-type hexagonal prism elements.
+		UNI	 : universe name of the lattice
+		TYPE	 : lattice type
+		X0	 : x-coordinate of the lattice origin
+		Y0	 : y-coordinate of the lattice origin
+		Z0	 : z-coordinate of the lattice origin
+		NX	 : number of lattice elements in x-direction
+		NY	 : number of lattice elements in y-direction
+		NZ	 : number of lattice elements in z-direction
+		PITCHX	 : lattice pitch in x-direction
+		PITCHY	 : lattice pitch in y-direction
+		PITCHZ	 : lattice pitch in z-direction
+		UNIn	 : list of universes filling the lattice positions
+		Possible lattice types are:
+			Type	Description
+			11	Cuboidal lattice
+			12	X-type hexagonal prism lattice
+			13	Y-type hexagonal prism lattice
+
+ltrans (lattice transformation)
+		See transformations.
+
+mat NAME DENS [ tmp TEMP ]
+              [ tms TEMP ]
+              [ tft TMIN TMAX ]
+              [ rgb R G B ]
+              [ vol VOL ]
+              [ mass MASS ]
+              [ burn NR ]
+              [ fix ID TEMP ] 
+              [ moder THNAME ZA ]
+  NUC1 FRAC1 
+[ NUC2 FRAC2 ]
+[    ...     ]
+		Mandatory information:
+		NAME	 : Name of the material
+		DENS	 : Density of the material (positive for atomic, negative for mass density) or sum to calculate the density from given nuclide fractions
+		NUCn	 : Identifier of nth nuclide in composition, e.g. "92235.03c" or "U-235.03c".
+		FRACn	 : Fraction of nth nuclide in composition, positive values are interpreted as atomic fractions/densities, negative values as mass fractions/densities.
+		Optional cards:
+		tmp: Material temperature for Doppler-preprocessor
+				TEMP	 : Temperature (in Kelvin) of the material for Doppler-broadening preprocessor
+		tms: Material temperature for on-the-fly TMS temperature treatment
+				TEMP	 : Temperature (in Kelvin) of the material for on-the-fly TMS temperature treatment
+		tft: Temperature limits for material for coupled multi-physics calculations
+				TMIN	 : Lower limit for material temperature
+				TMAX	 : Upper limit for material temperature
+		rgb: Material color for geometry plots
+				R	 : Value for the red channel of geometry plots (between 0 and 255)
+				G	 : Value for the green channel of geometry plots (between 0 and 255)
+				B	 : Value for the blue channel of geometry plots (between 0 and 255)
+		vol: Material volume
+				VOL	 : Volume of the material in cm3 (3D geometry) or cross-sectional area in cm2 (2D geometry)
+		mass: Material mass
+				MASS	 : Mass of the material in grams
+		burn: Flag material for depletion
+				NR	 : Set to 1 in order to deplete material. The depletion zone division should be done using the div-card.
+		fix: Library information for decay nuclides
+				LIB	 : Library ID (e.g. "09c") for nuclides without cross section data.
+				TEMP	 : Temperature (in Kelvin) for nuclides without cross section data.
+		moder: Use thermal scattering data library for a nuclide. The moder entry can be used several times to define thermal scattering libraries for multiple nuclides, such as hydrogen and deuterium in heavy water.
+				THNAME	 : Name of the thermal scattering data library defined using the therm card.
+				ZA	 : Nuclide ZA of the thermal scatterer (e.g. 1001 for H-1).
+
+mesh ORI XPIX YPIX [ SYM MIN1 MAX1 MIN2 MAX2 MIN3 MAX3 ]
+mesh 8 CMAP DET ORI XPIX YPIX [ SYM MIN1 MAX1 MIN2 MAX2 MIN3 MAX3 ]
+mesh 10 ORI XPIX YPIX
+		Produces a png-format mesh plot of various results. Input values:
+		ORI	 : orientation with respect to coordinate axes
+		XPIX	 : horizontal image size in pixels
+		YPIX	 : vertical image size in pixels
+		SYM	 : symmetry option (not used in Serpent 2)
+		MINn MAXn	 : boundaries of the plotted region
+		CMAP	 : color map used for plotting detector scores (positive entry for linear, negative for log-scale)
+		DET	 : detector name
+
+mflow NAME
+   NUC1 λ1
+ [ NUC2 λ2 ]
+ [   ...   ]
+		Defines the material flow. Input values:
+		NAME	 : name of the material flow
+		NUCn	 : identifier of nth nuclide in composition
+		λn	 : reprocessing constant of nth nuclide in composition (in s-1)
+
+mix NAME [ rgb R G B ]
+         [ vol VOL ]
+         [ mass MASS ]
+MAT1 F1
+MAT2 F2
+...
+		Defines a mixture of two or several materials. Input values:
+		Mandatory information:
+		MATn	 : material name
+		Fn	 : material fraction (positive values for volume, negative values for mass fractions)
+		Optional cards:
+				rgb: Material color for geometry plots
+				R	 : Value for the red channel of geometry plots (between 0 and 255)
+				G	 : Value for the green channel of geometry plots (between 0 and 255)
+				B	 : Value for the blue channel of geometry plots (between 0 and 255)
+				vol: Material volume
+				VOL	 : Volume of the material in cm3 (3D geometry) or cross-sectional area in cm2 (2D geometry)
+				mass: Material mass
+				MASS	 : Mass of the material in g
+
+nest U TYPE
+  [ MAT1 R1 ] 
+  [ MAT2 R2 ] 
+  ...
+  [ MATN ]
+nest U 
+  [ MAT1 TYPE1 PARAM11 PARAM12 ... ] 
+  [ MAT2 TYPE2 PARAM21 PARAM22 ... ] 
+   ...
+  [ MATN ] 
+		Defines a universe consisting of nested regions. Input values:
+		U	 : universe name
+		TYPE	 : nested surface type (single surface for all regions)
+		MAT1 ... MATN	 : material regions
+		R1 ... RN-1	 : outer radii
+		TYPE1 ... TYPEN-1	 : nested surface type (different surfaces for each region)
+		PARAMnm ...	 : surface parameters
+
+particle U
+       [ MAT1 R1 ] 
+       [ MAT2 R2 ] 
+       ...
+       [ MATN ]
+		Defines a particle universe. Input values:
+		U	 : universe name
+		MAT1 ... MATN	 : material regions
+		R1 ... RN-1	 : outer radii
+
+pbed U0 Ubg FILE [ OPT ] 
+		Defines a stochastic particle / pebble-bed geometry. Input values:
+		U0	 : universe name for the dispersed medium
+		Ubg	 : background universe, i.e. universe filling the space between particles / pebbles
+		FILE	: input file containing the particle/pebble data
+		OPT	: additional options (currently only pow to produce power distribution in a separate output file)
+		The syntax of the file containing the particle/pebble data is:
+			X1 Y1 Z1 R1 U1
+			X2 Y2 Z2 R2 U2
+			...
+			Where:
+				Xn, Yn, Zn	: are the coordinates
+				Rn	: is the radius
+				Un	: is the universe
+
+phb NAME TYPE [ ... ]
+		Defines a user-defined (Gaussian) energy broadening function for pulse-height detector (dphb). Input values:
+		NAME	: pulse-height (Gaussian) energy broadening function name
+		TYPE	: pulse-height function type (1 = energy-resolution interpolation, 2 = energy-FWHM interpolation, 3 = energy-resolution fitting, 4 = energy-FWHM fitting)
+		The syntax for the different types is as follows:
+			phb NAME 1 INTT Emax,1 R1 Emax,2 R2 ...
+			where:
+					INTT	: is the interpolation type (currently only supported type is 2 = lin-lin interpolation data)
+					Emax,i, Ri	: are the maximum energy-resolution tabulated pairs
+		phb NAME 2 INTT Emax,1 FWHM1 Emax,2 FWHM2 ...
+		where:
+				INTT	: is the interpolation type (currently only supported type is 2 = lin-lin interpolation data)
+				Emax,i, FWHMi	: are the maximum energy-full width at half maximum pairs
+		phb NAME 3 a b
+		where:
+				a, b	: are the parameters to define the energy resolution fit:  R = aE^b 
+		phb NAME 4 a b c
+		where:
+				a, b, c	: are the parameters to define the energy full width at half maximum
+
+pin U
+  [ MAT1 R1 ] 
+  [ MAT2 R2 ] 
+  ...
+  [ MATN ]
+		Defines a pin universe. Input values:
+		U	 : universe name
+		MAT1 ... MATN	 : material regions
+		R1 ... RN-1	 : outer radii
+
+plot TYPE XPIX YPIX [ POS MIN1 MAX1 MIN2 MAX2 ]
+plot TYPE Fmin Fmax E XPIX YPIX [ POS MIN1 MAX1 MIN2 MAX2 ]
+		Produces a png-format geometry plot. Input values:
+		TYPE	 : defines the plot type (orientation and plotting of boundaries)
+		XPIX	 : horizontal image size in pixels
+		YPIX	 : vertical image size in pixels
+		POS	 : position of plot plane
+		MIN1	 : minimum horizontal coordinate of plotted region
+		MAX1	 : maximum horizontal coordinate of plotted region
+		MIN2	 : minimum vertical coordinate of plotted region
+		MAX2	 : maximum vertical coordinate of plotted region
+		Fmin	 : minimum importance for importance map plots
+		Fmax	 : maximum importance for importance map plots
+		E	 : particle energy for importance map plots
+
+rep NAME
+   [ rc SRC TGT MFLOW MODE ]
+   [ rm MAT1 MAT2 ]
+   [ ru UNI1 UNI2 ]
+		Defines the reprocessing controllers. Input values:
+		NAME	 : name of the reprocessor.
+		SRC	 : name of the source material, from which the flow is moved
+		TGT	 : name of the target material, to which the flow is moved
+		MFLOW	 : name of the material flow
+		MODE	 : continuous reprocessing mode
+		MAT1	 : name of the replaced material
+		MAT2	 : name of the replacing material
+		UNI1	 : name of the replaced universe
+		UNI2	 : name of the replacing universe
+		The rm material reprocessing option replaces one material with another, MAT1 by MAT2.
+		The ru universe reprocessing option replaces one universe with another, UNI1 by UNI2.
+
+sample  NX XMIN XMAX  NY YMIN YMAX  NZ ZMIN ZMAX
+		Samples values from the initial material temperatures and densities to a file using a Cartesian grid.
+		Input values:
+		NX	 : Number of values to sample in the x-direction.
+		XMIN	 : Minimum coordinate to sample from in the x-direction.
+		XMAX	 : Maximum coordinate to sample from in the x-direction.
+		NY	 : Number of values to sample in the y-direction.
+		YMIN	 : Minimum coordinate to sample from in the y-direction.
+		YMAX	 : Maximum coordinate to sample from in the y-direction.
+		NZ	 : Number of values to sample in the z-direction.
+		ZMIN	 : Minimum coordinate to sample from in the z-direction.
+		ZMAX	 : Maximum coordinate to sample from in the z-direction.
+
+sens pert
+sens resp
+sens opt
+
+solid 1 UNI BGUNI
+	MESH_SPLIT MESH_DIM SZ1 SZ2 ... SZMESH_DIM
+	POINTS_FILE
+	FACES_FILE
+	OWNER_FILE
+	NEIGHBOUR_FILE
+	MATERIALS_FILE
+		Creates an unstructured mesh-based geometry universe. Input values are:
+		UNI	 : universe name for the irregular geometry
+		BGUNI	 : name of the background universe filling all undefined space
+		MESH_SPLIT	 : Splitting criterion for the adaptive search mesh (maximum number of geometry cells in search mesh cell)
+		MESH_DIM	 : number of levels in the adaptive search mesh
+		SZi	 : Size of the search mesh at level i
+		POINTS_FILE	 : Path to the unstructured mesh points file
+		FACES_FILE	 : Path to the unstructured mesh faces file
+		OWNER_FILE	 : Path to the unstructured mesh owner file
+		NEIGHBOUR_FILE	 : Path to the unstructured mesh neighbour file
+		MATERIALS_FILE	 : Path to the unstructured mesh materials file
+		solid 2 UNI BGUNI
+		MESH_SPLIT MESH_DIM SZ1 SZ2 ... SZMESH_DIM
+		MODE R0
+		body BODY1 CELL1 MAT1
+		file BODY1 FILE1 SCALE1 X1 Y1 Z1
+		file BODY1 FILE2 SCALE2 X2 Y2 Z2
+		...
+		body BODY2 CELL2 MAT2
+		file BODY2 FILE3 SCALE3 X3 Y3 Z3
+		file BODY2 FILE4 SCALE4 X4 Y4 Z4
+		...
+		Creates an STL-based geometry universe. Input values are:
+		UNI	 : universe name for the irregular geometry
+		BGUNI	 : name of the background universe filling all undefined space
+		MESH_SPLIT	 : Splitting criterion for the adaptive search mesh (maximum number of geometry cells in search mesh cell)
+		MESH_DIM	 : number of levels in the adaptive search mesh
+		SZi	 : Size of the search mesh at level i
+		MODE	 : Mode for handling the triangulated geometry (1 = "fast", 2 = "safe").
+		R0	 : Radius inside which two points of the STL-geometry are joined into one.
+		BODYi	 : Name of solid body i
+		CELLi	 : Name of geometry cell i linked with body i
+		MATi	 : Material filling cell i
+		FILEi	 : Path to a file containing an STL solid model, multiple files can be linked to one body
+		SCALEi	 : Scaling factor for the STL model in FILEi
+		Xi	 : Shift in x-direction to the STL model in FILEi
+		Yi	 : Shift in y-direction to the STL model in FILEi
+		Zi	 : Shift in z-direction to the STL model in FILEi
+
+		solid 3 
+		INTERFACE_FILE
+			Creates an unstructured mesh-based geometry universe with unstructured mesh-based temperature and/or density distributions. Input values are:
+			INTERFACE_FILE	 : Path to the interface file containing the rest of the parameters
+		
+src NAME [ PART ]
+         [ sw WGT ] 
+         [ sc CELL ]
+         [ su UNI ]
+         [ sm MAT ]
+         [ sp X Y Z ] 
+         [ sx XMIN XMAX ]
+         [ sy YMIN YMAX ]
+         [ sz ZMIN ZMAX ]
+         [ srad RMIN RMAX ]
+         [ ss SURF ]
+         [ sd U V W ]   
+         [ se E ]
+         [ sb N INTT E1 WGT1 E2 WGT2 ... ]
+         [ sr NUC MT ]
+         [ st TMIN TMIN ]
+         [ sf FILE TYPE ]
+         [ si N P1 P2 ... ]
+         [ sg MAT MODE ]
+		Source definition. The first parameter:
+		PART	 : particle type (n = neutron, p = photon)
+		is optional in single particle simulations. The remaining parameters are defined by separate key words followed by the input values.
+		Source weight (sw):
+				WGT	 : relative source weight
+		Source cell (sc):
+				CELL	 : cell inside which the source points are sampled
+		Source universe (su):
+				UNI	 : universe inside which the source points are sampled
+		Source material (sm):
+				MAT	 : material inside which the source points are sampled
+		NSource point (sp):
+				X, Y, Z,	 : coordinates of the source point
+		Source boundaries (sx, sy, sz and srad):
+				XMIN, XMAX	 : Boundaries on X-axis
+				YMIN, YMAX	 : Boundaries on Y-axis
+				ZMIN, ZMAX	 : Boundaries on Z-axis
+				RMIN, RMAX	 : Radial boundaries
+		Surface source (ss):
+				SURF	 : surface on which the source particles are sampled
+		Source direction (sd):
+				U, V, W,	 : direction vector of source particles
+		Source energy (se):
+				E	 : energy of source particles
+		Source energy bins (sb):
+				N	 : number of bins
+				INTT	 : interpolation (0 = line spectrum, 1 = histogram, 2 = lin-lin, 4 = log-lin)
+				En	 : upper boundary of the energy bin
+				WGTn	 : weight of the energy bin
+		Source reaction (sr):
+				NUC	 : nuclide name
+				MT	 : reaction number
+		Source time (st):
+				TMIN, TMAX	 : time boundaries
+		Source file (sf):
+				FILE	 : file path to source file
+				TYPE	 : file type (-1 = binary, 1 = ASCII)
+		User-defined source routine (si):
+				N	 : number of parameters
+				Pn	 : parameters passed as arguments into the subroutine
+		Radioactive decay source (sg):
+				MAT	 : material name or -1
+				MODE	 : sampling mode (1 = analog, 2 = implicit)
+
+surf NAME TYPE [ PARAM1 PARAM2 ... ]
+		Defines a surface. Input values:
+
+		NAME	 : is the surface name
+		TYPE	 : is the surface type
+		PARAMn	 : are the surface parameters
+therm NAME LIB 
+therm NAME TEMP LIB1 LIB2 
+therm NAME 0 LIB1 LIB2 LIB3 ... 
+thermstoch NAME TEMP LIB1 LIB2 
+		Defines thermal scattering data that can be linked to nuclides using input entry moder in the material cards. When using thermal scattering data together with TMS on-the-fly temperature treatment, the third input value of the therm card is 0. In this case, Serpent interpolates the thermal scattering data automatically to the local temperature, as defined either using the tms input entry in the material definition (mat card) or via the multi-physics interface (ifc card).
+
+		Input values:
+
+		NAME	 : name of the thermal scattering data
+		LIBi	 : thermal scattering data identifiers as defined in the directory file (acelib)
+		TEMP	 : temperature to which the thermal scattering data is interpolated
+
+tme NAME 1 LIM1 LIM2 ...
+tme NAME 2 NB Tmin Tmax
+tme NAME 3 NB Tmin Tmax
+		Defines a time binning structure. The second entry sets the binning type (1 = arbitrary, 2 = uniform, 3 = log-uniform). Remaining values:
+
+		NAME	 : name of the time binning
+		NB	 : number of bins
+		LIMn	 : time bin boundaries in arbitrary binning
+		Tmin	 : minimum time boundary in uniform or log-uniform binning
+		Tmax	 : maximum time boundary in uniform or log-uniform binning
+
+
+trans TYPE UNIT [ IDX ] LVL
+trans TYPE UNIT [ IDX ] X Y Z
+trans TYPE UNIT [ IDX ] X Y Z θx θy θz ORD
+trans TYPE UNIT [ IDX ] X Y Z α1 α2 α3 α4 α5 α6 α7 α8 α9 ORD
+trans TYPE UNIT [ IDX ] rot X0 Y0 Z0 I J K β
+		Defines surface, universe, fill, lattice, detector mesh or source transformation. Input values:
+
+		TYPE	 : type of transformation (S = surface, F = fill, U = universe, L = lattice, D = detector mesh, SR = source)
+		UNIT	 : surface, cell, universe, lattice, detector mesh or source name to which the transformation is applied
+		IDX	 : index number in lattice transformation (type L)
+		LVL	 : level number in universe level transformation
+		X,Y,Z	 : translation vector
+		θx θy θz	 : rotation angles with respect to x-, y- and z-axes (in degrees)
+		α1 ... α9	 : coefficients of the rotation matrix
+		ORD	 : order in which translations and rotations are applied (1 = rotations first, 2 = translations first)
+		X0,Y0,Z0	 : Origin of vector defining rotation axis.
+		I,J,K	 : Components of vector defining rotation axis.
+		β	 : Angle around rotation axis defined by a vector (in degrees). NB: In Serpent 2.1.29 positive values correspond to rotation to the negative mathematical direction and vice versa.
+
+
+transb STEP [ <trans> ]  
+	Defines burnup-dependent surface, universe or fill transformation. Input values:
+
+	STEP	 : step in units of burnup (positive values) or days (negative values)
+	<trans>	 : list of parameters associated with the transformation
+
+transv TYPE UNIT [ IDX ] [ tlim T0 T1 TTYPE ] VX VY VZ
+transa TYPE UNIT [ IDX ] [ tlim T0 T1 TTYPE ] AX AY AZ
+
+	Defines surface, universe, fill, lattice, detector mesh or source transformation. Input values:
+	TYPE	 : type of transformation (S = surface, F = fill, U = universe, L = lattice, D = detector mesh, SR = source)
+	UNIT	 : surface, cell, universe, lattice, detector mesh or source name to which the transformation is applied
+	IDX	 : index number in lattice transformation (type L)
+	T0	 : beginning time of the transformation
+	T1	 : end time of the transformation
+	TTYPE	 : transformation type after end time (1 = movement stops, 2 = transformation removed, 3 = initial acceleration and velocity removed, but velocity accumulated due to acceleration remains)
+	VX,VY,VZ	 : Initial velocity vector
+	AX,AY,AZ	 : Initial acceleration vector
+
+umsh (unstructured mesh-based geometry definition)
+UNI BGUNI
+	MESH_SPLIT MESH_DIM SZ1 SZ2 ... SZMESH_DIM
+	POINTS_FILE
+	FACES_FILE
+	OWNER_FILE
+	NEIGHBOUR_FILE
+	MATERIALS_FILE
+		Defines an unstructured mesh-based geometry. Input values:
+		UNI	 : universe name for the unstructured mesh-based geometry
+		BGUNI	 : name of the background universe filling all undefined space
+		MESH_SPLIT	 : splitting criterion for the adaptive search mesh (maximum number of geometry cells in search mesh cell)
+		MESH_DIM	 : number of levels in the adaptive search mesh
+		SZi	 : size of the search mesh at level i
+		POINTS_FILE	 : path to the unstructured mesh points file
+		FACES_FILE	 : path to the unstructured mesh faces file
+		OWNER_FILE	 : path to the unstructured mesh owner file
+		NEIGHBOUR_FILE	 : path to the unstructured mesh neighbour file
+		MATERIALS_FILE	 : path to the unstructured mesh materials file
+
+utrans (universe transformation)
+		See transformations.
+
+wwgen NAME LIM NI MOD ERG MSH 
+     MIN1 MAX1 SZ1
+     MIN2 MAX2 SZ2
+     MIN3 MAX3 SZ3
+     DET1 W1 [ DET2 W2 ... ]
+wwgen NAME LIM NI MOD ERG MSH 
+     SZ1 SZ2 SZ3  
+     LIM11 LIM12 ...
+     LIM21 LIM22 ...
+     LIM31 LIM32 ...
+     DET1 W1 [ DET2 W2 ... ]
+wwgen NAME LIM NI MOD ERG MSH 
+     X0 Y0   
+     P NX NY
+     MIN3 MAX3 SZ3
+     DET1 W1 [ DET2 W2 ... ]
+		Defines the parameters for importance map calculation. Input values:
+		NAME	 : a unique name to identify the calculation
+		LIM	 : convergence criterion (typical value 1E-12)
+		NI	 : maximum number of iterations
+		MOD	 : solution mode (1 = single detector, 2 = multiple detectors, 3 = global variance reduction)
+		ERG	 : energy group structure (or -1 if no energy dependence is included)
+		MSH	 : mesh type (1 = Cartesian, 2 = Cylindrical, 4 = x-type hexagonal, 5 = y-type hexagonal, 6 = unevenly-spaced xyz, 8 = unevenly spaced cylindrical)
+		MINn	 : minimum mesh boundary (nth coordinate)
+		MAXn	 : maximum mesh boundary (nth coordinate)
+		SZn	 : number of mesh cells (nth coordinate)
+		LIMnm	 : mesh boundary mth (nth coordinate)
+		X0, Y0	 : mesh center of hexagonal mesh (currently must be centered at the origin)
+		P	 : hexagonal cell pitch
+		NX, NY	 : hexagonal mesh size
+		DETi	 : detectors used as target response functions
+		Wi	 : weight factors for detector scores
+
+wwin NAME 
+   [ wf FILE FMT ]
+   [ wn F X Y Z E ] 
+   [ wx C G ] 
+   [ wt SB TYPE MIN MAX ]
+   [ wi ITP NI WWG1 DF1 WWG2 DF2 ... ]
+   [ wi ITP NI WWG NX NY NZ NLOOP NTRK ISPL NSPL DSPL1 SX1 SY1 SZ1 DSPL2 SX2 SY2 SZ2 ...]
+		Defines a weight window mesh for variance reduction. The first parameter:
+		NAME	 : a unique name to identify the mesh 
+		identifies the mesh. The remaining parameters are defined by separate key words followed by the input values.
+		Mesh file (wf):
+				FILE	 : file path and name of the importance mesh file
+				FMT	 : file format (1 = mesh produced by Serpent importance map generator, 2 = MCNP WWINP format weight window mesh file)
+		Mesh normalization (wn):
+				F	 : importance for renormalization
+				X,Y,Z	 : coordinates of point used for renormalization
+				E	 : energy used for renormalization		
+		Mesh adjustment (wx):
+				C	 : constant multiplier for adjusting importances
+				G	 : exponential for adjusting importances		
+		Types and options (wt):
+				SB	 : option to set source biasing on (1/yes) or off (0/no) with Serpent-generated importance maps
+				TYPE	 : bounds type for Serpent-generated weight-windows (1 = averaged, 2 = segment-wise)
+				MIN	 : minimum truncation limit for importances
+				MAX	 : maximum truncation limit for importances
+		Weight-window iterations, fixed mesh (wi):
+				ITP	 : iteration type (1 = fixed mesh)
+				NI	 : number of iterations between Monte Carlo simulation and the response matrix solver
+				WWGi	 : name of the WWG-structure used in the iteration
+				DFi	 : global density factor
+		Weight-window iterations, adaptive mesh (wi):
+				ITP	 : iteration type (2 = geometry-based adaptation, 3 = tracking-based adaptation)
+				NI	 : number of iterations between Monte Carlo simulation and the response matrix solver
+				WWG	 : name of the WWG-structure used in the iteration
+				NX	 : number of x-divisions for the adaptive mesh
+				NY	 : number of y-divisions for the adaptive mesh
+				NZ	 : number of z-divisions for the adaptive mesh
+				NLOOP	 : number of outer iteration loops in generation of adaptive mesh
+				NTRK	 : number of tracks per loop in generation of adaptive mesh
+				ISPL	 : importance split criterion
+				NSPL	 : neighbor split criterion
+				DSPLi	 : density split criterion (negative values for mass, positive values for atomic density)
+				SZi	 : minimum cell dimension
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

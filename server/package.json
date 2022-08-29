@@ -1,0 +1,23 @@
+{
+	"name": "serpent-language-server",
+	"description": "Implementation of an Serpent Language Server",
+	"version": "1.0.0",
+	"author": "",
+	"license": "MIT",
+	"engines": {
+		"vscode": "^1.63.0",
+		"node": "*"
+	},
+	"repository": {
+		"type": "git",
+		"url": ""
+	},
+	"dependencies": {
+		"vscode-languageserver": "^7.0.0",
+		"vscode-languageserver-textdocument": "^1.0.1"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.63.0"
+	},
+	"scripts": {}
+}
